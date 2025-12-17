@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initPortfolioFilters() {
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.premium-project-card');
+        const projectCards = document.querySelectorAll('.project-card-home');
         const mobileFilterToggle = document.querySelector('.mobile-filter-toggle');
         const filterWrapper = document.querySelector('.filter-buttons-wrapper');
         const filterToggleText = mobileFilterToggle ? mobileFilterToggle.querySelector('span') : null;
