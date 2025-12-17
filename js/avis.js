@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fonction pour afficher un avis
     function createReviewElement(review) {
-        const div = document.createElement('div');
+        const div = document.createElement('article');
         div.className = 'review-item fade-in-up';
 
         const stars = Array(5).fill(0).map((_, i) =>

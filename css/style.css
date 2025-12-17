@@ -67,6 +67,10 @@ ul {
     list-style: none;
 }
 
+address {
+    font-style: normal;
+}
+
 img {
     max-width: 100%;
     display: block;

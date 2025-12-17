@@ -47,7 +47,7 @@ async function loadHomeReviews() {
 
     // Helper: Create Review HTML (Matches avis.js style)
     function createReviewElement(review) {
-        const div = document.createElement('div');
+        const div = document.createElement('article');
         div.className = 'review-item fade-in-up';
 
         // Stars
