@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Envoi de l'email via EmailJS
-            emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, templateParams)
+            emailjs.send(EMAILJS_CONFIG.CONTACT_SERVICE_ID, EMAILJS_CONFIG.CONTACT_TEMPLATE_ID, templateParams, EMAILJS_CONFIG.CONTACT_PUBLIC_KEY)
                 .then(function () {
                     alert('Merci ' + templateParams.from_name + ', votre demande concernant "' + templateParams.type_demande + '" a bien été envoyée !');
                     contactForm.reset();

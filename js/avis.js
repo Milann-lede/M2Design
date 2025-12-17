@@ -124,7 +124,7 @@ ${newReview.message}
                     `
                 };
 
-                emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, emailParams)
+                emailjs.send(EMAILJS_CONFIG.REVIEW_SERVICE_ID, EMAILJS_CONFIG.REVIEW_TEMPLATE_ID, emailParams, EMAILJS_CONFIG.REVIEW_PUBLIC_KEY)
                     .then(() => {
                         console.log('Email de notification envoyé !');
                     })
