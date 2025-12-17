@@ -1,0 +1,259 @@
+/* Homepage Projects Grid */
+.projects-grid-home {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .projects-grid-home {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.project-card-home {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card-home:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl);
+}
+
+.project-card-home .project-image {
+    height: 300px;
+    width: 100%;
+}
+
+.project-card-home .project-info {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project-card-home .project-desc {
+    margin-bottom: 1.5rem;
+    flex: 1; /* Pushes button to bottom */
+}
+
+.project-title-large {
+    font-size: 1.5rem !important;
+}
+
+/* Featured Projects Custom Styles */
+
+/* Common Container Styles for the 3D-ish look */
+.project-card-home {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: var(--surface);
+    border: none;
+}
+
+.project-card-home:hover {
+    transform: translateY(-10px) scale(1.02);
+    z-index: 10;
+}
+
+/* =========================================
+Card 1: Nature / Geometric (Jardins de Marie)
+========================================= */
+.project-nature {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    border: 1px solid #bbf7d0;
+    box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.2);
+    border-radius: 20px;
+}
+
+.project-nature::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 2px solid rgba(74, 222, 128, 0.3);
+    border-radius: 30px;
+    z-index: -1;
+    transform: rotate(-2deg);
+    transition: transform 0.4s ease;
+}
+
+.project-nature:hover::before {
+    transform: rotate(-4deg) scale(1.05);
+}
+
+.project-nature .project-category {
+    color: #15803d;
+    background: #dcfce7;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.project-nature .project-image {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transform: scale(0.95);
+    transition: transform 0.4s ease;
+}
+
+.project-nature:hover .project-image {
+    transform: scale(1);
+}
+
+.project-nature .btn-outline {
+    border-color: #22c55e;
+    color: #15803d;
+}
+
+.project-nature .btn-outline:hover {
+    background: #22c55e;
+    color: white;
+}
+
+/* =========================================
+Card 2: Tech / Diamond (Portfolio)
+========================================= */
+.project-tech {
+    background: #0f172a;
+    color: white;
+    border: 1px solid #1e293b;
+    overflow: hidden;
+}
+
+.project-tech h3,
+.project-tech p {
+    color: white;
+}
+
+.project-tech .project-desc {
+    color: #94a3b8;
+}
+
+.project-tech::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.project-tech .project-image {
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.project-tech::before {
+    content: '</>';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: monospace;
+    color: rgba(59, 130, 246, 0.2);
+    font-size: 4rem;
+    font-weight: 900;
+    z-index: 0;
+    transform: rotate(15deg);
+}
+
+.project-tech .project-category {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-family: monospace;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.project-tech .btn-outline {
+    border-color: #3b82f6;
+    color: #60a5fa;
+}
+
+.project-tech .btn-outline:hover {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+/* =========================================
+Card 3: Gaming / Neon (Game Fusion)
+========================================= */
+.project-gaming {
+    background: #000000;
+    border: 2px solid #d946ef;
+    box-shadow: 0 0 15px rgba(217, 70, 239, 0.3), inset 0 0 20px rgba(217, 70, 239, 0.1);
+    color: white;
+}
+
+.project-gaming::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: radial-gradient(circle at 50% 50%, transparent 60%, #d946ef 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(10px);
+}
+
+.project-gaming:hover::before {
+    opacity: 0.6;
+}
+
+.project-gaming h3 {
+    color: #e879f9;
+    text-shadow: 0 0 5px rgba(232, 121, 249, 0.8);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+}
+
+.project-gaming p {
+    color: #e2e8f0;
+}
+
+.project-gaming .project-category {
+    color: #22d3ee;
+    text-shadow: 0 0 5px #22d3ee;
+    letter-spacing: 2px;
+}
+
+.project-gaming .project-image {
+    border: 1px solid #22d3ee;
+    box-shadow: 0 0 10px #22d3ee, 0 0 5px #d946ef;
+    filter: contrast(1.2) brightness(1.1);
+}
+
+.project-gaming .btn-outline {
+    border-color: #d946ef;
+    color: #d946ef;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-gaming .btn-outline:hover {
+    background: #d946ef;
+    color: white;
+    box-shadow: 0 0 20px #d946ef;
+}
