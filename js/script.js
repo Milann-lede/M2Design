@@ -212,4 +212,71 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+    // ==========================================
+    // 3. Project Details Modal
+    // ==========================================
+    initProjectModal();
+
+    function initProjectModal() {
+        const modal = document.querySelector('.project-modal-overlay');
+        const closeBtn = document.querySelector('.modal-close-btn');
+        const openBtns = document.querySelectorAll('.open-project-modal');
+
+        if (!modal) return;
+
+        // Elements to populate
+        const modalTitle = modal.querySelector('.modal-title');
+        const modalCategory = modal.querySelector('.modal-category');
+        const modalDesc = modal.querySelector('.modal-desc');
+        const modalDuration = modal.querySelector('.modal-duration');
+        const modalClient = modal.querySelector('.modal-client');
+        const modalLink = modal.querySelector('.modal-project-link');
+
+        // Open Modal
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Get Data
+                const title = btn.getAttribute('data-title');
+                const category = btn.getAttribute('data-category');
+                const desc = btn.getAttribute('data-desc');
+                const duration = btn.getAttribute('data-duration');
+                const client = btn.getAttribute('data-client');
+                const link = btn.getAttribute('href');
+
+                // Populate
+                modalTitle.textContent = title;
+                modalCategory.textContent = category;
+                modalDesc.textContent = desc;
+                if (modalDuration) modalDuration.textContent = duration;
+                if (modalClient) modalClient.textContent = client;
+                if (modalLink) modalLink.setAttribute('href', link);
+
+                // Show
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+        });
+
+        // Close Logic
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Escape Key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
 });

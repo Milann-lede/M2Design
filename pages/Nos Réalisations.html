@@ -99,9 +99,17 @@
                             <p class="premium-project-desc">Des légumes cultivés avec passion dans les Hauts-de-France.
                                 Découvrez nos produits bio, récoltés à la main. Une plateforme immersive pour connecter
                                 producteurs et consommateurs.</p>
-                            <a href="https://milann-lede.github.io/les-jardins-de-marie/"
-                                class="btn btn-primary">Découvrir le
-                                projet <i class="fas fa-arrow-right ml-2"></i></a>
+                            <div class="project-actions">
+                                <a href="https://milann-lede.github.io/les-jardins-de-marie/"
+                                    class="btn btn-primary">Découvrir le projet <i
+                                        class="fas fa-arrow-right ml-2"></i></a>
+                                <button class="btn btn-outline open-project-modal" data-title="Les Jardins de Marie"
+                                    data-category="Site Vitrine & E-commerce"
+                                    data-desc="Des légumes cultivés avec passion dans les Hauts-de-France. Découvrez nos produits bio, récoltés à la main. Une plateforme immersive pour connecter producteurs et consommateurs."
+                                    data-duration="1 Semaine" data-client="Marie Bio"
+                                    href="https://milann-lede.github.io/les-jardins-de-marie/">Plus d'infos <i
+                                        class="fas fa-info-circle ml-2"></i></button>
+                            </div>
                         </div>
                     </article>
 
@@ -121,9 +129,17 @@
                             <p class="premium-project-desc">Création d'un portfolio interactif pour présenter mes
                                 réalisations.
                                 Un design épuré mettant en valeur les compétences techniques et créatives.</p>
-                            <a href="https://milann-lede.github.io/Portefolio-milann-lede/ class=" btn
-                                btn-primary">Découvrir le
-                                projet <i class="fas fa-arrow-right ml-2"></i></a>
+                            <div class="project-actions">
+                                <a href="https://milann-lede.github.io/Portefolio-milann-lede/"
+                                    class="btn btn-primary">Découvrir le projet <i
+                                        class="fas fa-arrow-right ml-2"></i></a>
+                                <button class="btn btn-outline open-project-modal" data-title="Portfolio"
+                                    data-category="Site Web Personnel"
+                                    data-desc="Création d'un portfolio interactif pour présenter mes réalisations. Un design épuré mettant en valeur les compétences techniques et créatives."
+                                    data-duration="1 Mois" data-client="Personnel"
+                                    href="https://milann-lede.github.io/Portefolio-milann-lede/">Plus d'infos <i
+                                        class="fas fa-info-circle ml-2"></i></button>
+                            </div>
                         </div>
                     </article>
 
@@ -143,8 +159,16 @@
                             <p class="premium-project-desc">Site de présentation de jeux vidéo avec une esthétique
                                 néon/cyberpunk.
                                 Une immersion totale dans l'univers du gaming.</p>
-                            <a href="https://game-fusione.netlify.app/" class="btn btn-primary">Découvrir le projet <i
-                                    class="fas fa-arrow-right ml-2"></i></a>
+                            <div class="project-actions">
+                                <a href="https://game-fusione.netlify.app/" class="btn btn-primary">Découvrir le projet
+                                    <i class="fas fa-arrow-right ml-2"></i></a>
+                                <button class="btn btn-outline open-project-modal" data-title="Game Fusione"
+                                    data-category="Site Web Gaming"
+                                    data-desc="Site de présentation de jeux vidéo avec une esthétique néon/cyberpunk. Une immersion totale dans l'univers du gaming."
+                                    data-duration="1 Semaine" data-client="Fusion Gaming"
+                                    href="https://game-fusione.netlify.app/">Plus d'infos <i
+                                        class="fas fa-info-circle ml-2"></i></button>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -185,6 +209,35 @@
             </div>
         </div>
     </footer>
+
+    <!-- Project Details Modal -->
+    <div class="project-modal-overlay">
+        <div class="project-modal-content">
+            <button class="modal-close-btn"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <span class="modal-category">Catégorie</span>
+                <h2 class="modal-title">Titre du Projet</h2>
+            </div>
+
+            <div class="modal-info-grid">
+                <div class="modal-info-item">
+                    <h4><i class="far fa-clock"></i> Durée</h4>
+                    <p class="modal-duration">2 semaines</p>
+                </div>
+                <div class="modal-info-item">
+                    <h4><i class="far fa-user"></i> Client</h4>
+                    <p class="modal-client">Nom du Client</p>
+                </div>
+            </div>
+
+            <p class="modal-desc">Description du projet...</p>
+
+            <div class="modal-actions">
+                <a href="#" class="btn btn-primary modal-project-link" target="_blank">Voir le site en live <i
+                        class="fas fa-external-link-alt ml-2"></i></a>
+            </div>
+        </div>
+    </div>
 
     <script src="../js/script.js"></script>
 </body>
