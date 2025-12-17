@@ -1348,7 +1348,7 @@ footer p {
 
 .premium-project-card {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr; /* Image slightly larger */
+    grid-template-columns: 1fr 1fr; /* Equal split to ensure same image size */
     gap: 4rem;
     align-items: center;
     opacity: 0; /* JS Animation or remove if static */
@@ -1357,7 +1357,7 @@ footer p {
 
 /* Alternate Layout: Even children reverse order */
 .premium-project-card:nth-child(even) {
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: 1fr 1fr;
     direction: rtl; /* Quick way to swap, but need to reset text direction */
 }
 

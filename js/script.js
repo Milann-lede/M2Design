@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     loadHomeReviews();
 
+    // Initialize Portfolio Filters
+    initPortfolioFilters();
+
     async function loadHomeReviews() {
         const testimonialsContainer = document.getElementById('home-testimonials');
         if (!testimonialsContainer) return; // Exit if not on home page
@@ -123,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initPortfolioFilters() {
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.project-card-home');
+        const projectCards = document.querySelectorAll('.premium-project-card');
         const mobileFilterToggle = document.querySelector('.mobile-filter-toggle');
         const filterWrapper = document.querySelector('.filter-buttons-wrapper');
         const filterToggleText = mobileFilterToggle ? mobileFilterToggle.querySelector('span') : null;
