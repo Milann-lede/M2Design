@@ -1,0 +1,203 @@
+/* Premium 3D Project Cards */
+
+:root {
+    --card-bg: #FFFFFF;
+    --card-shadow-idle: 0 10px 30px -10px rgba(15, 23, 42, 0.05); /* Very subtle cool gray */
+    --card-shadow-hover: 0 25px 50px -12px rgba(37, 99, 235, 0.15); /* Blue tinted lift */
+    --accent-blue: #2563EB;
+    --text-slate: #0F172A;
+    --text-muted: #64748B;
+}
+
+.premium-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
+    perspective: 2000px; /* Essential for 3D effect */
+    padding: 2rem 0;
+}
+
+.premium-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    cursor: pointer;
+    overflow: hidden; /* Contains the image */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: var(--card-shadow-idle);
+    /* Initial state */
+    transform: rotateX(0) rotateY(0) translateZ(0);
+}
+
+.premium-card:hover {
+    transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+    box-shadow: var(--card-shadow-hover);
+    border-color: rgba(37, 99, 235, 0.1);
+}
+
+/* 3D Image Container */
+.card-visual-container {
+    height: 320px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #F8FAFC; /* Light gray base */
+    border-bottom: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+.card-img-3d {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease-out;
+    transform: scale(1.05); /* Slight zoom initially */
+}
+
+.premium-card:hover .card-img-3d {
+    transform: scale(1.1) translateZ(20px); /* Parallax effect */
+}
+
+/* Holographic Overlays */
+.holo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(37, 99, 235, 0.02) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+}
+
+.premium-card:hover .holo-overlay {
+    opacity: 1;
+}
+
+/* Tech Decorations (The "Interface" feel) */
+.tech-marker {
+    position: absolute;
+    background: var(--accent-blue);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.marker-top-right {
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 1px;
+}
+
+.marker-top-right::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    height: 20px;
+    background: var(--accent-blue);
+}
+
+.marker-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    width: 20px;
+    height: 1px;
+}
+
+.marker-bottom-left::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 1px;
+    height: 20px;
+    background: var(--accent-blue);
+}
+
+.tech-tag {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-family: 'Courier New', monospace; /* Monospace for tech feel */
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    transform: translateZ(10px);
+    z-index: 4;
+}
+
+/* Card Content */
+.card-details {
+    padding: 2rem;
+    background: #FFFFFF;
+    position: relative;
+    z-index: 5;
+    transform: translateZ(1px); /* Ensure it sits on top */
+}
+
+.card-title-premium {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-slate);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-title-premium span {
+    transition: color 0.3s ease;
+}
+
+.premium-card:hover .card-title-premium span {
+    color: var(--accent-blue);
+}
+
+.card-desc-premium {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.btn-premium {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: gap 0.3s ease;
+    gap: 0.5rem;
+}
+
+.btn-premium:hover {
+    gap: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .premium-projects-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    
+    .card-visual-container {
+        height: 250px;
+    }
+}
