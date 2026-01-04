@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const insertedReview = data[0]; // Get the inserted review data
                 const emailParams = {
                     from_name: newReview.name,
-                    reply_to: 'no-reply@m2design.fr', // No email collected in review form
-                    email: 'no-reply@m2design.fr',
+                    reply_to: 'no-reply@modernweb.fr', // No email collected in review form
+                    email: 'no-reply@modernweb.fr',
                     subject: `Nouvel Avis Client : ${newReview.rating}/5 ⭐`,
                     type_demande: 'Avis Client',
                     message: `
