@@ -128,73 +128,142 @@ Card 1: Nature / Geometric (Jardins de Marie)
 /* =========================================
 Card 2: Tech / Diamond (Portfolio)
 ========================================= */
+/* =========================================
+Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
+========================================= */
 .project-tech {
-    background: #0f172a;
-    color: white;
-    border: 1px solid #1e293b;
+    background: #FDFBF7; /* Cream/Beige background matches bottom half */
+    color: #4A3B32;
+    border: none;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.project-tech::before,
+.project-tech::after {
+    display: none;
+}
+
+/* 1. Top Section: Image Area */
+.project-tech .project-image {
+    background: transparent !important; /* Ensure no underlying blue/slate color shows */
+    background-image: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    
+    height: 350px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    
+    /* Slanted Cut Effect */
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    
+    display: block; 
+    padding: 0;
+    margin: 0;
     overflow: hidden;
 }
 
-.project-tech h3,
-.project-tech p {
-    color: white;
+.project-tech .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Ensure no borders on the image itself */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    background: transparent !important;
 }
 
-.project-tech .project-desc {
-    color: #94a3b8;
+.project-tech:hover .project-image img {
+    transform: scale(1.1);
 }
 
-.project-tech::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120%;
-    height: 120%;
-    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-    transform: translate(-50%, -50%) rotate(45deg);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.project-tech .project-image {
+/* 2. Bottom Section: Info Body */
+.project-tech .project-info {
+    background: #FDFBF7;
+    padding: 1.5rem 2.5rem 2.5rem 2.5rem;
     position: relative;
-    z-index: 1;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    z-index: 2;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.project-tech::before {
-    content: '</>';
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-family: monospace;
-    color: rgba(59, 130, 246, 0.2);
-    font-size: 4rem;
-    font-weight: 900;
-    z-index: 0;
-    transform: rotate(15deg);
-}
-
+/* Badge: E-COMMERCE */
 .project-tech .project-category {
-    background: rgba(59, 130, 246, 0.2);
-    color: #60a5fa;
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-family: monospace;
-    border: 1px solid rgba(59, 130, 246, 0.4);
-}
-
-.project-tech .btn-outline {
-    border-color: #3b82f6;
-    color: #60a5fa;
-}
-
-.project-tech .btn-outline:hover {
-    background: #3b82f6;
+    background: #881F41; /* Maroon */
     color: white;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 10px rgba(136, 31, 65, 0.2);
+}
+
+/* Title: Digital Planner Lisa */
+.project-tech h3 {
+    color: #3E2F28; /* Dark brown */
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    font-family: var(--font-main);
+    line-height: 1.1;
+}
+
+/* Description */
+.project-tech p,
+.project-tech .project-desc {
+    color: #6D5A50; /* Softer brown */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+/* Button: Voir le projet */
+.project-tech .btn-outline {
+    background: #881F41; /* Maroon */
+    color: white;
+    border: none !important; /* Force remove any border */
+    outline: none !important; /* Force remove focus ring */
+    border-radius: 50px;
+    padding: 16px 0;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px -5px rgba(136, 31, 65, 0.4);
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.project-tech .btn-outline:hover,
+.project-tech .btn-outline:focus,
+.project-tech .btn-outline:active {
+    background: #681530;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px -5px rgba(136, 31, 65, 0.5);
+    color: white;
+    border: none !important;
+    outline: none !important;
 }
 
 /* =========================================
