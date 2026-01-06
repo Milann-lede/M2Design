@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cookie-consent.css">
     <link rel="stylesheet" href="../css/avis.css">
 
     <!-- EmailJS SDK -->
@@ -108,6 +109,19 @@
                             placeholder="Racontez votre expérience..."></textarea>
                     </div>
 
+                    <div class="form-group"
+                        style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 1.5rem;">
+                        <input type="checkbox" id="consent" name="consent" required
+                            style="margin-top: 5px; cursor: pointer; width: auto; height: auto;">
+                        <label for="consent"
+                            style="font-size: 0.9rem; color: var(--text-main); cursor: pointer; margin-bottom: 0;">
+                            J'accepte que mon avis et mes données soient publiés sur le site conformément à la <a
+                                href="confidentialite.html"
+                                style="text-decoration: underline; color: var(--primary);">politique de
+                                confidentialité</a>.
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-primary w-100">Publier mon avis</button>
                 </form>
             </div>
@@ -155,6 +169,7 @@
                         <li><a href="contact.html">Contact</a></li>
                         <li><a href="mentions-legales.html">Mentions Légales</a></li>
                         <li><a href="confidentialite.html">Confidentialité</a></li>
+                        <li><a href="#" class="js-open-cookies">Gestion des cookies</a></li>
                     </ul>
                 </div>
                 <div>
@@ -177,6 +192,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
     <script src="../js/supabase-client.js"></script>
+    <script src="../js/cookie-consent.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/avis.js"></script>
 </body>

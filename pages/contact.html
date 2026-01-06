@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cookie-consent.css">
 
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -148,6 +149,18 @@
                                     style="resize: vertical;"></textarea>
                             </div>
 
+                            <div style="margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 10px;">
+                                <input type="checkbox" id="consent" name="consent" required
+                                    style="margin-top: 5px; cursor: pointer;">
+                                <label for="consent"
+                                    style="font-size: 0.9rem; color: var(--text-main); cursor: pointer;">
+                                    J'accepte que mes données soient traitées conformément à la <a
+                                        href="confidentialite.html"
+                                        style="text-decoration: underline; color: var(--primary);">politique de
+                                        confidentialité</a>.
+                                </label>
+                            </div>
+
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
                                 Envoyer le message <i class="fas fa-paper-plane" style="margin-left: 8px;"></i>
                             </button>
@@ -175,6 +188,7 @@
                         <li><a href="contact.html">Contact</a></li>
                         <li><a href="mentions-legales.html">Mentions Légales</a></li>
                         <li><a href="confidentialite.html">Confidentialité</a></li>
+                        <li><a href="#" class="js-open-cookies">Gestion des cookies</a></li>
                     </ul>
                 </div>
                 <div>
@@ -193,6 +207,7 @@
         </div>
     </footer>
 
+    <script src="../js/cookie-consent.js"></script>
     <script src="../js/script.js"></script>
 </body>
 
