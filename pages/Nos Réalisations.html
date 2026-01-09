@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Réalisations - ModernWeb</title>
+
+    <!-- SEO -->
+    <title>Nos Réalisations Web à Lille | Portfolio - ModernWeb</title>
     <meta name="description"
-        content="Découvrez les projets web réalisés par ModernWeb. Sites vitrines, e-commerce et applications web.">
+        content="Découvrez les sites web réalisés par ModernWeb à Lille. Sites vitrines, e-commerce et applications web pour les entreprises du Nord.">
+    <link rel="canonical" href="https://modernweb.fr/pages/nos-realisations.html">
+
+    <!-- Geo -->
+    <meta name="geo.region" content="FR-59">
+    <meta name="geo.placename" content="Lille">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +21,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Icons - Defer -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
 
-    <!-- Styles -->
     <!-- Styles -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/style_responsive.css">
@@ -29,7 +36,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="../index.html" class="logo">
+            <a href="../index.html" class="logo" aria-hidden="true" tabindex="-1">
                 Modern<span>Web</span>
             </a>
             <div class="hamburger">
@@ -37,7 +44,7 @@
             </div>
             <ul class="nav-links">
                 <li><a href="../index.html" class="nav-link">Accueil</a></li>
-                <li><a href="portfolio.html" class="nav-link active">Réalisations</a></li>
+                <li><a href="Nos Réalisations.html" class="nav-link active">Réalisations</a></li>
                 <li><a href="avis.html" class="nav-link">Avis</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
             </ul>
@@ -83,6 +90,7 @@
         <!-- Portfolio Grid -->
         <section class="section-padding portfolio-grid-section">
             <div class="container">
+                <h2 class="sr-only">Notre Galerie</h2>
                 <div class="premium-project-grid">
                     <!-- Project 1: Jardins de Marie -->
                     <article class="premium-project-card" data-category="ecommerce">
@@ -215,7 +223,7 @@
     <!-- Project Details Modal -->
     <div class="project-modal-overlay">
         <div class="project-modal-content">
-            <button class="modal-close-btn"><i class="fas fa-times"></i></button>
+            <button class="modal-close-btn" aria-label="Fermer"><i class="fas fa-times"></i></button>
             <div class="modal-header">
                 <span class="modal-category">Catégorie</span>
                 <h2 class="modal-title">Titre du Projet</h2>

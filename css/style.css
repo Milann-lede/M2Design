@@ -12,7 +12,7 @@
     --background: #F8FAFC;    /* Slate 50 - Light Bg */
     --surface: #FFFFFF;       /* White */
     --text-main: #334155;     /* Slate 700 */
-    --text-light: #64748B;    /* Slate 500 */
+    --text-light: #475569;    /* Slate 600 - Darker for better contrast */
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
@@ -98,6 +98,18 @@ p {
 }
 
 /* Utilities */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
 .container {
     width: 100%;
     max-width: var(--container-width);
@@ -328,7 +340,8 @@ p {
     display: flex;
     flex-direction: column;
     gap: 4rem;
-    max-width: 1000px;
+    width: 100%; /* Use full container width */
+    max-width: none; /* Remove the 1000px limit */
     margin: 0 auto;
 }
 
@@ -343,6 +356,21 @@ p {
     border: 1px solid rgba(0,0,0,0.05);
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 950px; /* Constrain width so alignment is visible */
+}
+
+/* Align first card to the left */
+.marketing-card:nth-child(1) {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+/* Align second card (alt) to the right */
+.marketing-card.alt {
+    margin-left: auto;
+    margin-right: 0;
+    flex-direction: row-reverse; /* Ensure zigzag content */
 }
 
 .marketing-card:hover {
@@ -360,14 +388,15 @@ p {
         min-height: 400px;
     }
 
+    /* Staggered Layout (Quinconce) */
     .marketing-card.alt {
         flex-direction: row-reverse;
     }
 
     .card-image {
         width: 50%;
-        flex: 0 0 50%; /* Strictly enforce 50% width */
-        height: auto; /* Allow stretch */
+        flex: 0 0 50%;
+        height: auto;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -375,8 +404,8 @@ p {
 
     .card-content {
         width: 50%;
-        flex: 0 0 50%; /* Strictly enforce 50% width */
-        padding: 3rem;
+        flex: 0 0 50%;
+        padding: 4rem; /* Increased padding for better spacing */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -529,7 +558,7 @@ footer {
 }
 
 .footer-bottom p {
-    color: rgba(255, 255, 255, 0.7); /* Increased opacity for better contrast */
+    color: rgba(255, 255, 255, 0.85); /* Increased opacity for accessibility compliance */
     font-size: 0.9rem;
 }
 
@@ -1164,19 +1193,21 @@ footer p {
 
 .review-date {
     font-size: 0.8rem;
-    color: #94A3B8;
+    color: #334155; /* Slate 700 - Darker for homepage */
     margin-top: 20px;
     padding-top: 15px;
     border-top: 1px solid #F1F5F9;
     display: flex;
     align-items: center;
     gap: 6px;
+    font-weight: 500;
 }
 
 .review-date::before {
     content: '\f017';
     font-family: 'Font Awesome 6 Free';
-    font-weight: 400;
+    font-weight: 900;
+    color: #334155;
 }
 
 /* Animation Classes */

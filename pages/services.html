@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Services - ModernWeb</title>
+
+    <!-- SEO -->
+    <title>Services Web à Lille | Création Site, SEO, Refonte - ModernWeb</title>
     <meta name="description"
-        content="Découvrez nos services de création de sites web, refonte, design et optimisation SEO.">
+        content="Découvrez nos services web à Lille : création de sites vitrines et e-commerce, refonte, optimisation SEO. Agence web dans le Nord.">
+    <link rel="canonical" href="https://modernweb.fr/pages/services.html">
+
+    <!-- Geo -->
+    <meta name="geo.region" content="FR-59">
+    <meta name="geo.placename" content="Lille">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +21,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Icons - Defer -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
 
-    <!-- Styles -->
     <!-- Styles -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/cookie-consent.css">
@@ -28,7 +35,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="../index.html" class="logo">
+            <a href="../index.html" class="logo" aria-hidden="true" tabindex="-1">
                 Modern<span>Web</span>
             </a>
             <div class="hamburger">
@@ -59,6 +66,7 @@
     <!-- Services Section -->
     <section id="services" class="section-padding services-section-padding">
         <div class="container">
+            <h2 class="sr-only">Liste de nos services</h2>
             <div class="services-grid">
                 <!-- Service 1 -->
                 <div class="service-card">
@@ -98,6 +106,16 @@
                     <h3>Optimisation SEO</h3>
                     <p>Un code propre et une structure optimisée pour améliorer votre visibilité sur les moteurs de
                         recherche.</p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Conformité RGPD</h3>
+                    <p>Nous intégrons les standards de protection des données (cookies, mentions légales) pour garantir
+                        la sécurité juridique de votre activité.</p>
                 </div>
             </div>
         </div>

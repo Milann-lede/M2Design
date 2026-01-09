@@ -70,7 +70,8 @@ class CookieConsent {
                             <span class="cookie-option-desc">Indispensables au bon fonctionnement du site.</span>
                         </div>
                         <label class="cookie-toggle">
-                            <input type="checkbox" checked disabled>
+                            <span class="sr-only">Activer les cookies nécessaires</span>
+                            <input type="checkbox" checked disabled aria-label="Cookies nécessaires">
                             <span class="cookie-slider"></span>
                         </label>
                     </div>
@@ -81,7 +82,8 @@ class CookieConsent {
                             <span class="cookie-option-desc">Nous aident à comprendre comment vous utilisez le site.</span>
                         </div>
                         <label class="cookie-toggle">
-                            <input type="checkbox" id="consent-analytics" ${this.consent?.analytics ? 'checked' : ''}>
+                            <span class="sr-only">Activer les cookies analytiques</span>
+                            <input type="checkbox" id="consent-analytics" ${this.consent?.analytics ? 'checked' : ''} aria-label="Cookies analytiques">
                             <span class="cookie-slider"></span>
                         </label>
                     </div>

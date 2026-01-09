@@ -38,7 +38,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="../index.html" class="logo">
+            <a href="../index.html" class="logo" aria-hidden="true" tabindex="-1">
                 Modern<span>Web</span>
             </a>
             <div class="hamburger">
@@ -62,6 +62,7 @@
         </header>
 
         <section class="container">
+            <h2 class="sr-only">Formulaire et Liste</h2>
             <!-- Formulaire d'avis -->
             <div class="review-form-container glass-card">
                 <h3 class="text-center mb-4">Laisser un avis</h3>
@@ -70,15 +71,17 @@
                         <label>Note globale</label>
                         <div class="rating-input">
                             <input type="radio" name="rating" id="star5" value="5" required><label for="star5"
-                                title="Excellent"><i class="fas fa-star"></i></label>
+                                title="Excellent"><span class="sr-only">Excellent</span><i
+                                    class="fas fa-star"></i></label>
                             <input type="radio" name="rating" id="star4" value="4"><label for="star4"
-                                title="Très bien"><i class="fas fa-star"></i></label>
-                            <input type="radio" name="rating" id="star3" value="3"><label for="star3" title="Bien"><i
+                                title="Très bien"><span class="sr-only">Très bien</span><i
                                     class="fas fa-star"></i></label>
-                            <input type="radio" name="rating" id="star2" value="2"><label for="star2" title="Moyen"><i
-                                    class="fas fa-star"></i></label>
-                            <input type="radio" name="rating" id="star1" value="1"><label for="star1" title="Mauvais"><i
-                                    class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star3" value="3"><label for="star3" title="Bien"><span
+                                    class="sr-only">Bien</span><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star2" value="2"><label for="star2"
+                                title="Moyen"><span class="sr-only">Moyen</span><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star1" value="1"><label for="star1"
+                                title="Mauvais"><span class="sr-only">Mauvais</span><i class="fas fa-star"></i></label>
                         </div>
                     </div>
 
@@ -148,7 +151,7 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <h3>Merci !</h3>
-            <p>Merci d'avoir mis un avis sur ModernWeb.</p>
+            <p>Merci d'avoir laissé un avis sur ModernWeb.</p>
             <button class="btn btn-primary" onclick="closeModal()">Fermer</button>
         </div>
     </div>

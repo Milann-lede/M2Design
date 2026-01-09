@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contactez-nous - ModernWeb</title>
+
+    <!-- SEO -->
+    <title>Contactez votre Agence Web à Lille | Devis Gratuit - ModernWeb</title>
     <meta name="description"
-        content="Contactez ModernWeb pour discuter de votre projet web. Devis gratuit et réponse rapide.">
+        content="Contactez ModernWeb, votre agence web à Lille. Devis gratuit pour création de site internet, refonte et SEO. Réponse rapide sous 24h.">
+    <link rel="canonical" href="https://modernweb.fr/pages/contact.html">
+
+    <!-- Geo -->
+    <meta name="geo.region" content="FR-59">
+    <meta name="geo.placename" content="Lille">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +21,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Icons - Defer -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/style.css">
@@ -38,7 +46,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="../index.html" class="logo">
+            <a href="../index.html" class="logo" aria-hidden="true" tabindex="-1">
                 Modern<span>Web</span>
             </a>
             <div class="hamburger">
@@ -79,7 +87,7 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div>
-                                <h4 style="margin-bottom: 0.25rem;">Email</h4>
+                                <h3 style="margin-bottom: 0.25rem; font-size: 1.1rem;">Email</h3>
                                 <a href="mailto:contact@modernweb.fr" class="contact-link">contact@modernweb.fr</a>
                             </div>
                         </div>
@@ -89,7 +97,7 @@
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div>
-                                <h4 style="margin-bottom: 0.25rem;">Téléphone</h4>
+                                <h3 style="margin-bottom: 0.25rem; font-size: 1.1rem;">Téléphone</h3>
                                 <a href="tel:+330782591597" class="contact-link">+33 07 82 59 15 97</a>
                             </div>
                         </div>
