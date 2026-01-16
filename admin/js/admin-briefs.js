@@ -92,13 +92,13 @@ const BriefsManager = (function () {
                         <a href="${brief.pdf_url}" target="_blank" class="action-btn download" title="Voir PDF">
                             <i class="fas fa-external-link-alt"></i>
                         </a>
-                        <button class="action-btn edit" title="Marquer comme consulté" onclick="BriefsManager.updateStatus('${brief.id}', 'consulte')">
+                        <button type="button" class="action-btn edit" title="Marquer comme consulté" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus('${brief.id}', 'consulte')">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button class="action-btn view" title="Archiver" onclick="BriefsManager.updateStatus('${brief.id}', 'archive')">
+                        <button type="button" class="action-btn view" title="Archiver" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus('${brief.id}', 'archive')">
                             <i class="fas fa-archive"></i>
                         </button>
-                        <button class="action-btn delete" title="Supprimer" onclick="BriefsManager.deleteBrief('${brief.id}')">
+                        <button type="button" class="action-btn delete" title="Supprimer" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.deleteBrief('${brief.id}')">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>

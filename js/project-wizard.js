@@ -68,13 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 pdfUrl = await uploadToSupabase(data, pdfBlob);
             }
 
-            // 4. Send Email to ModernWeb (with all data)
-            await sendEmailToAdmin(data, pdfUrl);
+            // 4. Send Emails via PHP Backend (Admin + Client)
+            await sendEmailsViaPHP(data, pdfUrl);
 
-            // 5. Send Email confirmation to client
-            await sendEmailToClient(data);
-
-            // 6. Download the PDF for the user (DIRECT DOWNLOAD)
+            // 5. Download the PDF for the user (DIRECT DOWNLOAD)
             const fileName = `Cahier_des_charges_${data.user_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`;
             doc.save(fileName);
 
@@ -310,59 +307,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Email to Admin (ModernWeb) ---
-    async function sendEmailToAdmin(data, pdfUrl) {
-        const templateParams = {
-            from_name: data.user_name,
-            from_email: data.user_email,
-            phone: data.user_phone || 'Non renseigné',
-            company: data.user_company || 'Particulier',
+    // --- Email Sending via PHP Backend ---
+    async function sendEmailsViaPHP(data, pdfUrl) {
+        // Préparation des données pour l'API PHP
+        const payload = {
+            user_name: data.user_name,
+            user_email: data.user_email,
+            user_phone: data.user_phone,
+            user_company: data.user_company,
             project_type: data.project_type,
             design_style: data.design_style,
             budget: data.budget,
             deadline: data.deadline,
-            features: data.features.length > 0 ? data.features.join(', ') : 'Aucune',
-            pdf_link: pdfUrl || 'PDF non disponible en ligne',
-            message: `Nouveau cahier des charges reçu.\nLien PDF: ${pdfUrl}`
+            features: data.features.length > 0 ? data.features : [],
+            pdf_url: pdfUrl
         };
 
-        if (typeof emailjs !== 'undefined') {
-            try {
-                await emailjs.send(
-                    EMAILJS_CONFIG.CONTACT_SERVICE_ID,
-                    EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
-                    templateParams
-                );
-            } catch (err) {
-                console.warn("Email admin send error:", err);
-            }
-        }
-    }
+        try {
+            const response = await fetch('../api/send-email.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-    // --- Email to Client (confirmation) ---
-    async function sendEmailToClient(data) {
-        const clientParams = {
-            to_email: data.user_email,
-            to_name: data.user_name,
-            from_name: 'ModernWeb',
-            from_email: 'contact@modernweb.fr',
-            project_type: data.project_type,
-            message: `Bonjour ${data.user_name},\n\nNous avons bien reçu votre demande pour un projet ${data.project_type}.\n\nBudget : ${data.budget}\nDélai : ${data.deadline}\n\nUn membre de l'équipe vous recontactera sous 24h.\n\nCordialement,\nModernWeb`
-        };
+            const result = await response.json();
 
-        if (typeof emailjs !== 'undefined') {
-            try {
-                const templateId = EMAILJS_CONFIG.BRIEF_TEMPLATE_ID || EMAILJS_CONFIG.CONTACT_TEMPLATE_ID;
-                if (templateId) {
-                    await emailjs.send(
-                        EMAILJS_CONFIG.CONTACT_SERVICE_ID,
-                        templateId,
-                        clientParams
-                    );
-                }
-            } catch (err) {
-                console.warn("Email client send error:", err);
+            if (!response.ok) {
+                console.warn('Erreur API Email:', result.message);
+                // On ne bloque pas le flux utilisateur même si l'email échoue
+            } else {
+                console.log('Emails envoyés:', result.message);
             }
+
+        } catch (error) {
+            console.error('Erreur réseau / fetch:', error);
         }
     }
 

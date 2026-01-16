@@ -35,7 +35,7 @@ function initNavigation() {
             e.preventDefault();
             const page = item.dataset.page;
             showPage(page);
-            
+
             // Mettre à jour l'URL
             history.pushState({ page }, '', `#${page}`);
         });
@@ -122,20 +122,42 @@ function initMobileMenu() {
 function closeMobileMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-    
+
     sidebar?.classList.remove('open');
     overlay?.classList.remove('active');
 }
 
 /**
- * Initialise le bouton de déconnexion
+ * Initialise le bouton de déconnexion avec modal personnalisé
  */
 function initLogout() {
     const logoutBtn = document.getElementById('logoutBtn');
-    
-    logoutBtn?.addEventListener('click', async () => {
-        if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-            await AdminAuth.logout();
+    const logoutModal = document.getElementById('logoutModal');
+    const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+    const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
+    // Ouvrir le modal
+    logoutBtn?.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        logoutModal.hidden = false;
+    });
+
+    // Annuler
+    logoutCancelBtn?.addEventListener('click', function () {
+        logoutModal.hidden = true;
+    });
+
+    // Confirmer la déconnexion
+    logoutConfirmBtn?.addEventListener('click', async function () {
+        logoutModal.hidden = true;
+        await AdminAuth.logout();
+    });
+
+    // Fermer si clic sur l'overlay (fond sombre)
+    logoutModal?.addEventListener('click', function (e) {
+        if (e.target === logoutModal) {
+            logoutModal.hidden = true;
         }
     });
 }
@@ -145,7 +167,7 @@ function initLogout() {
  */
 function initSettings() {
     const form = document.getElementById('changePasswordForm');
-    
+
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
 

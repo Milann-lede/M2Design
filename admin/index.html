@@ -73,7 +73,7 @@
                 <div class="user-menu" id="userMenu">
                     <div class="user-avatar">M</div>
                     <div class="user-info">
-                        <div class="user-name">Milan</div>
+                        <div class="user-name">Milann</div>
                         <div class="user-role">Administrateur</div>
                     </div>
                     <i class="fas fa-chevron-right"></i>
@@ -95,7 +95,7 @@
                     <a href="../index.html" target="_blank" class="header-btn" title="Voir le site">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
-                    <button class="header-btn" id="logoutBtn" title="Déconnexion">
+                    <button type="button" class="header-btn" id="logoutBtn" title="Déconnexion">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -444,13 +444,37 @@
                         <div class="form-group">
                             <label for="projectCategory">Thème visuel</label>
                             <select id="projectCategory" class="form-control">
-                                <option value="auto" selected>🪄 Automatique (détection IA)</option>
-                                <option value="nature">🌿 Nature (vert)</option>
-                                <option value="tech">💼 Tech (bordeaux)</option>
-                                <option value="gaming">🎮 Gaming (néon violet)</option>
-                                <option value="default">📦 Standard (bleu)</option>
+                                <option value="auto" selected>🪄 Automatique (analyse de l'image)</option>
+                                <optgroup label="🌈 Thèmes Clairs">
+                                    <option value="nature">🌿 Nature (vert frais)</option>
+                                    <option value="ocean">🌊 Ocean (bleu profond)</option>
+                                    <option value="arctic">❄️ Arctic (bleu glacé)</option>
+                                    <option value="sunset">🌅 Sunset (orange/rose)</option>
+                                    <option value="coral">🪸 Coral (rose vif)</option>
+                                    <option value="rose">🌸 Rose (rose poudré)</option>
+                                    <option value="lavender">💜 Lavender (lavande)</option>
+                                    <option value="gold">✨ Gold (doré luxe)</option>
+                                    <option value="electric">⚡ Electric (jaune vif)</option>
+                                    <option value="minimal">◻️ Minimal (blanc épuré)</option>
+                                    <option value="earth">🏜️ Earth (terre/brun)</option>
+                                    <option value="vintage">📜 Vintage (sépia rétro)</option>
+                                </optgroup>
+                                <optgroup label="🌙 Thèmes Sombres">
+                                    <option value="tech">💼 Tech (bordeaux chic)</option>
+                                    <option value="dark">🖤 Dark (noir premium)</option>
+                                    <option value="forest">🌲 Forest (vert foncé)</option>
+                                    <option value="midnight">🌌 Midnight (bleu nuit)</option>
+                                    <option value="fire">🔥 Fire (rouge énergie)</option>
+                                    <option value="gaming">🎮 Gaming (néon violet)</option>
+                                    <option value="neon">💎 Neon (cyan/magenta)</option>
+                                </optgroup>
+                                <optgroup label="📦 Classiques">
+                                    <option value="default">🔵 Standard (bleu)</option>
+                                    <option value="construction">🏗️ Construction (orange)</option>
+                                </optgroup>
                             </select>
-                            <small class="form-hint">En mode auto, le thème s'adapte au type de projet</small>
+                            <small class="form-hint" id="themeHint">En mode auto, le thème est suggéré selon les
+                                couleurs de l'image</small>
                         </div>
                     </div>
 
@@ -537,6 +561,22 @@
                     <i class="fas fa-trash"></i>
                     Supprimer
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutModal" hidden>
+        <div class="modal-dialog modal-sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-sign-out-alt"></i> Déconnexion</h3>
+            </div>
+            <div class="modal-body text-center">
+                <p>Voulez-vous vraiment vous déconnecter ?</p>
+            </div>
+            <div class="modal-footer" style="justify-content: center; gap: 12px;">
+                <button type="button" class="btn btn-secondary" id="logoutCancelBtn">Annuler</button>
+                <button type="button" class="btn btn-danger" id="logoutConfirmBtn">Se déconnecter</button>
             </div>
         </div>
     </div>

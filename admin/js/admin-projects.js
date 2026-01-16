@@ -35,35 +35,209 @@ const ProjectsManager = (function () {
         featured: document.getElementById('projectFeatured')
     };
 
-    // Détection automatique du thème basée sur le type de projet et les mots-clés
-    function detectAutoTheme(projectType, title, description) {
+    // =========================================
+    // SMART THEME DETECTION - Color Analysis
+    // =========================================
+
+    /**
+     * Analyse les couleurs dominantes d'une image
+     * @param {File} imageFile - Fichier image uploadé
+     * @returns {Promise<{hue: number, saturation: number, lightness: number}>}
+     */
+    async function analyzeImageColors(imageFile) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            img.onload = () => {
+                // Réduire la taille pour performance
+                const size = 50;
+                canvas.width = size;
+                canvas.height = size;
+                ctx.drawImage(img, 0, 0, size, size);
+
+                const imageData = ctx.getImageData(0, 0, size, size);
+                const data = imageData.data;
+
+                let totalH = 0, totalS = 0, totalL = 0;
+                let pixelCount = 0;
+
+                // Parcourir les pixels
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i] / 255;
+                    const g = data[i + 1] / 255;
+                    const b = data[i + 2] / 255;
+
+                    // Convertir RGB en HSL
+                    const max = Math.max(r, g, b);
+                    const min = Math.min(r, g, b);
+                    let h, s, l = (max + min) / 2;
+
+                    if (max === min) {
+                        h = s = 0;
+                    } else {
+                        const d = max - min;
+                        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+                        switch (max) {
+                            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                            case g: h = ((b - r) / d + 2) / 6; break;
+                            case b: h = ((r - g) / d + 4) / 6; break;
+                        }
+                    }
+
+                    // Ignorer les pixels trop gris (faible saturation)
+                    if (s > 0.1) {
+                        totalH += h * 360;
+                        totalS += s * 100;
+                        totalL += l * 100;
+                        pixelCount++;
+                    }
+                }
+
+                URL.revokeObjectURL(img.src);
+
+                if (pixelCount === 0) {
+                    resolve({ hue: 0, saturation: 0, lightness: 50 });
+                } else {
+                    resolve({
+                        hue: totalH / pixelCount,
+                        saturation: totalS / pixelCount,
+                        lightness: totalL / pixelCount
+                    });
+                }
+            };
+
+            img.onerror = () => resolve({ hue: 0, saturation: 0, lightness: 50 });
+            img.src = URL.createObjectURL(imageFile);
+        });
+    }
+
+    /**
+     * Mappe les couleurs HSL vers un thème approprié
+     * @param {{hue: number, saturation: number, lightness: number}} colors
+     * @returns {string} - Nom du thème
+     */
+    function mapColorsToTheme({ hue, saturation, lightness }) {
+        // Faible saturation = gris/neutre
+        if (saturation < 15) {
+            return lightness > 50 ? 'minimal' : 'dark';
+        }
+
+        // Très sombre
+        if (lightness < 25) {
+            if (hue >= 0 && hue < 30) return 'fire';
+            if (hue >= 180 && hue < 260) return 'midnight';
+            if (hue >= 260 && hue < 330) return 'gaming';
+            return 'dark';
+        }
+
+        // Très clair
+        if (lightness > 75) {
+            if (hue >= 30 && hue < 60) return 'gold';
+            if (hue >= 60 && hue < 90) return 'electric';
+            return 'minimal';
+        }
+
+        // Détection par teinte (hue)
+        // Rouge : 0-15 ou 345-360
+        if (hue >= 345 || hue < 15) return 'fire';
+
+        // Orange : 15-45
+        if (hue >= 15 && hue < 45) return 'sunset';
+
+        // Jaune/Or : 45-65
+        if (hue >= 45 && hue < 65) return 'gold';
+
+        // Jaune vif : 65-90
+        if (hue >= 65 && hue < 90) return 'electric';
+
+        // Vert clair : 90-140
+        if (hue >= 90 && hue < 140) {
+            return lightness > 40 ? 'nature' : 'forest';
+        }
+
+        // Cyan/Turquoise : 140-190
+        if (hue >= 140 && hue < 190) return 'arctic';
+
+        // Bleu : 190-240
+        if (hue >= 190 && hue < 240) {
+            return lightness > 40 ? 'ocean' : 'midnight';
+        }
+
+        // Violet : 240-290
+        if (hue >= 240 && hue < 290) {
+            return saturation > 50 ? 'neon' : 'lavender';
+        }
+
+        // Magenta/Rose : 290-345
+        if (hue >= 290 && hue < 330) {
+            return saturation > 60 ? 'gaming' : 'rose';
+        }
+
+        if (hue >= 330 && hue < 345) return 'coral';
+
+        return 'default';
+    }
+
+    /**
+     * Détection automatique du thème (combinaison couleurs + mots-clés)
+     */
+    async function detectAutoTheme(projectType, title, description, imageFile = null) {
+        // Si une image est fournie, analyser ses couleurs
+        if (imageFile && imageFile.size > 0) {
+            try {
+                const colors = await analyzeImageColors(imageFile);
+                const suggestedTheme = mapColorsToTheme(colors);
+
+                // Afficher la suggestion dans l'UI
+                const hint = document.getElementById('themeHint');
+                if (hint) {
+                    hint.textContent = `💡 Thème suggéré : ${suggestedTheme} (basé sur les couleurs de l'image)`;
+                    hint.style.color = '#22c55e';
+                }
+
+                return suggestedTheme;
+            } catch (err) {
+                console.warn('Erreur analyse couleurs:', err);
+            }
+        }
+
+        // Fallback : détection par mots-clés
         const text = `${title} ${description}`.toLowerCase();
 
-        // Règles de détection basées sur le type de projet
-        const typeThemeMap = {
-            'ecommerce': 'tech',
-            'gaming': 'gaming',
-            'site_vitrine': 'nature',
-            'portfolio': 'tech',
-            'application': 'tech',
-            'immobilier': 'default'
-        };
-
-        // Détection par mots-clés dans le titre/description
         const keywordThemes = [
             { keywords: ['jardin', 'bio', 'nature', 'plante', 'vert', 'eco', 'éco', 'agricole', 'ferme'], theme: 'nature' },
-            { keywords: ['game', 'gaming', 'jeu', 'esport', 'néon', 'cyber'], theme: 'gaming' },
-            { keywords: ['tech', 'digital', 'planner', 'app', 'saas', 'startup', 'business'], theme: 'tech' }
+            { keywords: ['game', 'gaming', 'jeu', 'esport', 'néon', 'cyber', 'arcade'], theme: 'gaming' },
+            { keywords: ['tech', 'digital', 'planner', 'app', 'saas', 'startup', 'business', 'software'], theme: 'tech' },
+            { keywords: ['luxe', 'premium', 'gold', 'bijou', 'or', 'prestige'], theme: 'gold' },
+            { keywords: ['ocean', 'mer', 'voyage', 'bateau', 'maritime'], theme: 'ocean' },
+            { keywords: ['feu', 'sport', 'énergie', 'fitness', 'gym'], theme: 'fire' },
+            { keywords: ['spa', 'bien-être', 'yoga', 'zen', 'relaxation'], theme: 'lavender' },
+            { keywords: ['café', 'restaurant', 'food', 'cuisine', 'artisan'], theme: 'earth' },
+            { keywords: ['mariage', 'événement', 'fleur', 'décoration'], theme: 'rose' },
+            { keywords: ['musique', 'club', 'nuit', 'dj', 'festival'], theme: 'neon' },
+            { keywords: ['science', 'espace', 'astronomie', 'recherche'], theme: 'midnight' },
+            { keywords: ['vintage', 'rétro', 'ancien', 'antique', 'histoire'], theme: 'vintage' }
         ];
 
-        // Vérifier les mots-clés d'abord (plus spécifique)
         for (const rule of keywordThemes) {
             if (rule.keywords.some(kw => text.includes(kw))) {
                 return rule.theme;
             }
         }
 
-        // Sinon utiliser le type de projet
+        // Fallback par type de projet
+        const typeThemeMap = {
+            'ecommerce': 'tech',
+            'gaming': 'gaming',
+            'site_vitrine': 'nature',
+            'portfolio': 'minimal',
+            'application': 'tech',
+            'immobilier': 'earth'
+        };
+
         return typeThemeMap[projectType] || 'default';
     }
 
@@ -403,10 +577,11 @@ const ProjectsManager = (function () {
             // Déterminer le thème (auto ou manuel)
             let themeValue = fields.category.value;
             if (themeValue === 'auto') {
-                themeValue = detectAutoTheme(
+                themeValue = await detectAutoTheme(
                     fields.projectType.value,
                     fields.name.value,
-                    fields.shortDesc.value + ' ' + fields.fullDesc.value
+                    fields.shortDesc.value + ' ' + fields.fullDesc.value,
+                    thumbnailFile // Passer le fichier image pour analyse des couleurs
                 );
             }
 
