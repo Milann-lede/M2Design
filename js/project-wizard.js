@@ -125,16 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const features = [];
         form.querySelectorAll('input[name="features"]:checked').forEach(cb => features.push(cb.value));
 
-        let baseBudget = 400; // Base "Low Cost / Démarrage"
+        let baseBudget = 550; // Base "Low Cost / Démarrage"
         let baseDays = 7; // Délai rapide
         let breakdown = [];
 
         // === 1. TYPE DE PROJET ===
         const projectTypePricing = {
             'Site Vitrine': { budget: 0, days: 0, label: 'Site Vitrine' },
-            'E-commerce': { budget: 300, days: 5, label: 'Option E-commerce' },
-            'Portfolio': { budget: 30, days: 1, label: 'Option Portfolio' },
-            'Blog/Média': { budget: 60, days: 2, label: 'Option Blog' }
+            'E-commerce': { budget: 400, days: 6, label: 'Option E-commerce' },
+            'Portfolio': { budget: 50, days: 1, label: 'Option Portfolio' },
+            'Blog/Média': { budget: 80, days: 2, label: 'Option Blog' }
         };
 
         const projectType = data.project_type || 'Site Vitrine';
@@ -158,9 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // === 3. STYLE VISUEL ===
         const stylePricing = {
             'Minimaliste & Épuré': { budget: 0, days: 0 },
-            'Moderne & Tech': { budget: 30, days: 1 },
-            'Luxe & Élégant': { budget: 50, days: 2 },
-            'Coloré & Dynamique': { budget: 30, days: 1 }
+            'Moderne & Tech': { budget: 40, days: 1 },
+            'Luxe & Élégant': { budget: 150, days: 3 },
+            'Coloré & Dynamique': { budget: 40, days: 1 }
         };
 
         const designStyle = data.design_style;
@@ -176,9 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // === 4. CRÉATION VS REFONTE ===
         const hasWebsite = data.has_website;
         if (hasWebsite === "Non, c'est une création") {
-            baseBudget += 30;
-            baseDays += 1;
-            breakdown.push({ label: 'Installation (Nouveau site)', value: '+30€ / +1j' });
+            baseBudget += 100;
+            baseDays += 2;
+            breakdown.push({ label: 'Installation (Nouveau site)', value: '+100€ / +2j' });
         } else if (hasWebsite === "Oui, c'est une refonte") {
             baseBudget -= 50; // Remise Refonte
             breakdown.push({ label: 'Remise Refonte', value: '<span style="color:#22c55e">-50€</span>' });
@@ -187,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // === 5. LOGO / CHARTE GRAPHIQUE ===
         const brandingPricing = {
             'Oui, logo + charte': { budget: 0, days: 0 },
-            'Juste un logo': { budget: 100, days: 3, label: 'Création Logo' },
-            'Non, à créer': { budget: 250, days: 5, label: 'Pack Identité Simple' }
+            'Juste un logo': { budget: 120, days: 3, label: 'Création Logo' },
+            'Non, à créer': { budget: 300, days: 5, label: 'Pack Identité Simple' }
         };
 
         const hasBranding = data.has_branding;
@@ -211,9 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // === 7. NOMBRE DE PAGES ===
         const pagePricing = {
             '1-5 pages': { budget: 0, days: 0, label: '1 à 5 pages' },
-            '5-10 pages': { budget: 90, days: 2, label: '5 à 10 pages' },
-            '10-20 pages': { budget: 190, days: 4, label: '10 à 20 pages' },
-            'Plus de 20 pages': { budget: 390, days: 7, label: 'Plus de 20 pages' }
+            '5-10 pages': { budget: 120, days: 2, label: '5 à 10 pages' },
+            '10-20 pages': { budget: 250, days: 4, label: '10 à 20 pages' },
+            'Plus de 20 pages': { budget: 450, days: 7, label: 'Plus de 20 pages' }
         };
 
         const pageCount = data.page_count;
@@ -247,7 +247,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Affichage plus précis pour le client (Budget exact estimé)
-        const budgetText = `${finalBudget.toLocaleString('fr-FR')}€`;
+        // Utilsiation d'espaces simples pour éviter les problèmes de caractères dans le PDF
+        const budgetText = `${finalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}€`;
 
         // === MISE À JOUR DE L'INTERFACE ===
         const budgetEl = document.getElementById('estimated-budget');
@@ -266,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         breakdownList.innerHTML = '';
 
         // Ajouter la ligne de base
-        breakdownList.innerHTML = `<li><span>Base technique & Design</span><span>400€ / 7j</span></li>`;
+        breakdownList.innerHTML = `<li><span>Base technique & Design</span><span>550€ / 7j</span></li>`;
 
         breakdown.forEach(item => {
             const li = document.createElement('li');
@@ -312,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
-    // --- Beautiful PDF Generation (jsPDF) - Charte ModernWeb ---
+    // --- Beautiful PDF Generation (jsPDF) - Charte ModernWeb - UNE SEULE PAGE ---
     async function generatePDFDoc(data) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
@@ -329,225 +330,236 @@ document.addEventListener('DOMContentLoaded', () => {
             textLight: [71, 85, 105],      // #475569
             success: [34, 197, 94],        // Green
             warning: [245, 158, 11],       // Amber
-            gradientStart: [37, 99, 235],
-            gradientEnd: [59, 130, 246]
         };
 
-        // --- Fonctions Utilitaires ---
-        const addSectionTitle = (text, yPos) => {
-            doc.setFillColor(...colors.primary);
-            doc.roundedRect(15, yPos - 3, 4, 14, 1, 1, 'F');
-            doc.setTextColor(...colors.secondary);
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text(text, 24, yPos + 6);
-            return yPos + 16; // Retourne la position Y suivante
-        };
-
-        const checkPageBreak = (currentY, neededSpace) => {
-            if (currentY + neededSpace > 270) {
-                doc.addPage();
-                return 40; // Marge haute nouvelle page
-            }
-            return currentY;
-        };
-
-        // === HEADER ===
-        for (let i = 0; i < 40; i++) {
-            const ratio = i / 40;
-            const r = Math.round(colors.gradientStart[0] + (colors.gradientEnd[0] - colors.gradientStart[0]) * ratio);
-            const g = Math.round(colors.gradientStart[1] + (colors.gradientEnd[1] - colors.gradientStart[1]) * ratio);
-            const b = Math.round(colors.gradientStart[2] + (colors.gradientEnd[2] - colors.gradientStart[2]) * ratio);
-            doc.setFillColor(r, g, b);
-            doc.rect(0, i * 1, 210, 1.2, 'F');
-        }
+        // === HEADER COMPACT ===
+        doc.setFillColor(...colors.primary);
+        doc.rect(0, 0, 210, 28, 'F');
 
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(28);
+        doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
-        doc.text("Modern", 20, 25);
-        doc.setTextColor(200, 220, 255);
-        doc.text("Web", 62, 25);
+        doc.text("ModernWeb", 15, 15);
 
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(11);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.text("Cahier des Charges", 20, 35); // Accents simplifiés pour compatibilité sûre
+        doc.text("Cahier des Charges", 15, 22);
 
-        doc.setFontSize(10);
         doc.setTextColor(200, 220, 255);
-        const dateStr = new Date().toLocaleDateString('fr-FR');
-        doc.text(dateStr, 170, 35);
+        doc.setFontSize(9);
+        doc.text(new Date().toLocaleDateString('fr-FR'), 175, 15);
 
-        // === 1. CLIENT INFO ===
-        let y = 55; // Remonté
-        y = addSectionTitle("Informations Client", y);
+        let y = 35;
 
+        // === 1. CLIENT INFO - COMPACT ===
+        doc.setFillColor(...colors.primary);
+        doc.rect(15, y, 3, 10, 'F');
+        doc.setTextColor(...colors.secondary);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Client", 22, y + 7);
+
+        y += 14;
         doc.setFillColor(...colors.background);
-        doc.setDrawColor(226, 232, 240);
-        doc.roundedRect(15, y, 180, 35, 4, 4, 'FD');
+        doc.roundedRect(15, y, 180, 22, 3, 3, 'F');
 
-        doc.setFontSize(8);
+        doc.setFontSize(7);
         doc.setTextColor(...colors.textLight);
-        doc.text("NOM COMPLET", 22, y + 8);
-        doc.text("EMAIL", 110, y + 8);
-
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(...colors.secondary);
-        doc.text(data.user_name || "-", 22, y + 15);
-        doc.setTextColor(...colors.primary);
-        doc.text(data.user_email || "-", 110, y + 15);
-
-        doc.setFontSize(8);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(...colors.textLight);
-        doc.text("TELEPHONE", 22, y + 25);
-        doc.text("ENTREPRISE", 110, y + 25);
+        doc.text("NOM", 20, y + 6);
+        doc.text("EMAIL", 65, y + 6);
+        doc.text("TEL", 125, y + 6);
+        doc.text("ENTREPRISE", 160, y + 6);
 
+        doc.setFontSize(9);
+        doc.setTextColor(...colors.secondary);
+        doc.setFont('helvetica', 'bold');
+        doc.text((data.user_name || "-").substring(0, 15), 20, y + 14);
+        doc.setTextColor(...colors.primary);
+        doc.text((data.user_email || "-").substring(0, 22), 65, y + 14);
+        doc.setTextColor(...colors.secondary);
+        doc.text((data.user_phone || "-").substring(0, 12), 125, y + 14);
+        doc.text((data.user_company || "-").substring(0, 15), 160, y + 14);
+
+        y += 28;
+
+        // === 2. DETAILS PROJET - GRILLE COMPACTE ===
+        doc.setFillColor(...colors.primary);
+        doc.rect(15, y, 3, 10, 'F');
+        doc.setTextColor(...colors.secondary);
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(...colors.secondary);
-        doc.text(data.user_phone || "-", 22, y + 32);
-        doc.text(data.user_company || "-", 110, y + 32);
+        doc.text("Projet", 22, y + 7);
 
-        y += 45; // Espace après carte client
+        y += 14;
 
-        // === 2. DETAILS PROJET ===
-        y = checkPageBreak(y, 80);
-        y = addSectionTitle("Details du Projet", y);
-
-        const drawInfoCard = (label, value, x, yPos, w) => {
+        const drawMiniCard = (label, value, x, yPos, w) => {
             doc.setFillColor(...colors.surface);
             doc.setDrawColor(226, 232, 240);
-            doc.roundedRect(x, yPos, w, 20, 3, 3, 'FD');
+            doc.roundedRect(x, yPos, w, 18, 2, 2, 'FD');
 
-            doc.setFillColor(...colors.primary);
-            doc.rect(x, yPos + 6, 2, 8, 'F'); // Petit marqueur bleu
-
-            doc.setFontSize(7);
+            doc.setFontSize(6);
             doc.setTextColor(...colors.textLight);
             doc.setFont('helvetica', 'normal');
-            doc.text(label, x + 8, yPos + 7);
+            doc.text(label, x + 3, yPos + 5);
 
-            doc.setFontSize(9);
+            doc.setFontSize(8);
             doc.setTextColor(...colors.secondary);
             doc.setFont('helvetica', 'bold');
-            const val = value && value.length > 25 ? value.substring(0, 23) + "..." : value;
-            doc.text(val || "-", x + 8, yPos + 15);
+            const val = value && value.length > 18 ? value.substring(0, 16) + ".." : value;
+            doc.text(val || "-", x + 3, yPos + 13);
         };
 
-        drawInfoCard("TYPE DE PROJET", data.project_type, 15, y, 58);
-        drawInfoCard("SECTEUR", data.sector, 76, y, 58);
-        drawInfoCard("STYLE VISUEL", data.design_style, 137, y, 58);
+        // Ligne 1 : 3 cartes
+        drawMiniCard("TYPE", data.project_type, 15, y, 60);
+        drawMiniCard("SECTEUR", data.sector, 77, y, 60);
+        drawMiniCard("STYLE", data.design_style, 139, y, 56);
 
-        y += 24;
-        drawInfoCard("SITE EXISTANT", data.has_website, 15, y, 58);
-        drawInfoCard("BRANDING", data.has_branding, 76, y, 58);
-        drawInfoCard("PAGES", data.page_count, 137, y, 58);
+        y += 20;
 
-        y += 35; // Espace après détails
+        // Ligne 2 : 3 cartes
+        drawMiniCard("SITE EXISTANT", data.has_website, 15, y, 60);
+        drawMiniCard("BRANDING", data.has_branding, 77, y, 60);
+        drawMiniCard("NB PAGES", data.page_count, 139, y, 56);
 
-        // === 3. ESTIMATION ===
-        y = checkPageBreak(y, 60);
-        y = addSectionTitle("Estimation", y);
+        y += 26;
 
-        // Carte Estimation Compacte
-        doc.setFillColor(240, 249, 255); // #f0f9ff
+        // === 3. ESTIMATION - BANDEAU ===
+        doc.setFillColor(...colors.primary);
+        doc.rect(15, y, 3, 10, 'F');
+        doc.setTextColor(...colors.secondary);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Estimation", 22, y + 7);
+
+        y += 14;
+
+        doc.setFillColor(239, 246, 255);
         doc.setDrawColor(...colors.primary);
-        doc.setLineWidth(0.4);
-        doc.roundedRect(15, y, 180, 28, 4, 4, 'FD');
+        doc.setLineWidth(0.3);
+        doc.roundedRect(15, y, 180, 20, 3, 3, 'FD');
 
         // Budget
         doc.setFillColor(...colors.primary);
-        doc.circle(30, y + 14, 8, 'F');
+        doc.circle(28, y + 10, 6, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(11);
-        doc.text("€", 27.5, y + 17);
+        doc.setFontSize(9);
+        doc.text("€", 28, y + 12.5, { align: 'center' });
 
         doc.setTextColor(...colors.textLight);
-        doc.setFontSize(8);
-        doc.text("BUDGET", 45, y + 10);
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'normal');
+        doc.text("BUDGET ESTIME", 38, y + 7);
         doc.setTextColor(...colors.primary);
-        doc.setFontSize(14);
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text(data.budget || "NC", 45, y + 20);
+        doc.text(data.budget || "A definir", 38, y + 15);
 
         // Délai
         doc.setFillColor(...colors.primary);
-        doc.circle(120, y + 14, 8, 'F');
+        doc.circle(118, y + 10, 6, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(9);
-        doc.text("J", 118.5, y + 17);
+        doc.text("J", 118, y + 12.5, { align: 'center' }); // "J" centré
 
         doc.setTextColor(...colors.textLight);
-        doc.setFontSize(8);
-        doc.text("DELAI", 135, y + 10);
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'normal');
+        doc.text("DELAI ESTIME", 128, y + 7);
         doc.setTextColor(...colors.primary);
-        doc.setFontSize(14);
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text(data.deadline || "NC", 135, y + 20);
+        doc.text(data.deadline || "A definir", 128, y + 15);
 
-        y += 38; // Espace après estimation
+        y += 26;
 
-        // === 4. FONCTIONNALITÉS ===
-        y = checkPageBreak(y, 40);
-        y = addSectionTitle("Fonctionnalites", y);
+        // === 4. FONCTIONNALITÉS - LISTE HORIZONTALE ===
+        doc.setFillColor(...colors.primary);
+        doc.rect(15, y, 3, 10, 'F');
+        doc.setTextColor(...colors.secondary);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Fonctionnalites", 22, y + 7);
+
+        y += 12;
 
         if (data.features && data.features.length > 0) {
-            const featureYStart = y;
-            let currentX = 20;
-            let currentY = featureYStart;
-
-            doc.setFontSize(9);
+            doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(...colors.textMain);
 
-            // Affichage en mode "Tags" ou liste compacte 2 colonnes
-            data.features.forEach((feat, index) => {
-                if (index % 2 === 0) currentX = 20;
-                else currentX = 110;
+            // Afficher en 3 colonnes
+            const col1 = data.features.filter((_, i) => i % 3 === 0);
+            const col2 = data.features.filter((_, i) => i % 3 === 1);
+            const col3 = data.features.filter((_, i) => i % 3 === 2);
 
-                if (index > 0 && index % 2 === 0) currentY += 7;
-
+            let featY = y;
+            col1.forEach((feat, i) => {
                 doc.setFillColor(...colors.success);
-                doc.circle(currentX, currentY - 1, 1.5, 'F');
-                doc.text(feat, currentX + 5, currentY);
+                doc.circle(18, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 20), 22, featY + 2 + i * 6);
             });
-            y = currentY + 12;
+
+            col2.forEach((feat, i) => {
+                doc.setFillColor(...colors.success);
+                doc.circle(80, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 20), 84, featY + 2 + i * 6);
+            });
+
+            col3.forEach((feat, i) => {
+                doc.setFillColor(...colors.success);
+                doc.circle(142, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 20), 146, featY + 2 + i * 6);
+            });
+
+            y += Math.max(col1.length, col2.length, col3.length) * 6 + 6;
         } else {
-            doc.setFontSize(9);
+            doc.setFontSize(8);
             doc.setFont('helvetica', 'italic');
             doc.setTextColor(...colors.textLight);
-            doc.text("Aucune selectionnee.", 20, y);
-            y += 10;
+            doc.text("Aucune fonctionnalite selectionnee", 20, y + 2);
+            y += 8;
         }
 
-        // === 5. DESCRIPTION ===
-        y += 5;
-        if (data.project_description) {
-            y = checkPageBreak(y, 40);
-            y = addSectionTitle("Description", y);
+        // === 5. DESCRIPTION - COMPACT ===
+        if (data.project_description && data.project_description.trim()) {
+            y += 4;
+            doc.setFillColor(...colors.primary);
+            doc.rect(15, y, 3, 10, 'F');
+            doc.setTextColor(...colors.secondary);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Description", 22, y + 7);
 
-            doc.setFontSize(9);
+            y += 12;
+
+            doc.setFillColor(...colors.background);
+            doc.roundedRect(15, y, 180, 30, 3, 3, 'F');
+
+            doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(...colors.textMain);
 
-            const splitDesc = doc.splitTextToSize(data.project_description, 175);
-            doc.text(splitDesc, 20, y);
+            const splitDesc = doc.splitTextToSize(data.project_description, 170);
+            doc.text(splitDesc.slice(0, 5), 20, y + 7); // Max 5 lignes
         }
 
-        // === FOOTER (Fixe en bas de page) ===
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setDrawColor(200, 200, 200);
-            doc.line(15, 280, 195, 280);
-            doc.setFontSize(8);
-            doc.setTextColor(150, 150, 150);
-            doc.text("ModernWeb Lille - Devis & Cahier des Charges", 15, 286);
-            doc.text("Page " + i + "/" + pageCount, 185, 286);
-        }
+        // === FOOTER ===
+        doc.setDrawColor(...colors.primary);
+        doc.setLineWidth(0.5);
+        doc.line(15, 275, 195, 275);
+
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...colors.primary);
+        doc.text("ModernWeb", 15, 282);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...colors.textLight);
+        doc.text("Creation de sites web - Lille", 40, 282);
+
+        doc.setFontSize(7);
+        doc.text("contact@modernweb.fr | Ce document est une estimation indicative.", 120, 282);
 
         return doc;
     }
