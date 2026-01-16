@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Configuration ---
-    const TOTAL_STEPS = 5;
+    const TOTAL_STEPS = 8;
     let currentStep = 1;
 
     // --- Elements ---
@@ -126,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (step === 1 || step === 2) {
+        // Valider les radios sur les étapes 1, 2, 3, 4
+        if ([1, 2, 3, 4].includes(step)) {
             const radios = currentStepEl.querySelectorAll('input[type="radio"]');
             const isChecked = Array.from(radios).some(r => r.checked);
             if (!isChecked) {
@@ -187,6 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (data.user_phone) doc.text(`Telephone : ${data.user_phone}`, 25, y);
         if (data.user_company) doc.text(`Entreprise : ${data.user_company}`, 110, y);
+        y += 8;
+        if (data.sector) doc.text(`Secteur : ${data.sector}`, 25, y);
 
         // === PROJECT DETAILS SECTION ===
         y = 115;
@@ -220,8 +223,23 @@ document.addEventListener('DOMContentLoaded', () => {
         drawBox("Budget estime", data.budget, 20, [254, 249, 195], [161, 98, 7]);
         drawBox("Delai souhaite", data.deadline, 105, [254, 226, 226], [185, 28, 28]);
 
+        y += 30;
+
+        // Nouvelle ligne avec site existant et logo
+        if (data.has_website) drawBox("Site existant", data.has_website, 20, [243, 232, 255], [107, 33, 168]);
+        if (data.has_branding) drawBox("Logo/Charte", data.has_branding, 105, [254, 243, 199], [180, 83, 9]);
+
+        y += 25;
+
+        // Nombre de pages
+        if (data.page_count) {
+            doc.setTextColor(...grayColor);
+            doc.setFontSize(10);
+            doc.text(`Envergure : ${data.page_count}`, 20, y);
+        }
+
         // === FEATURES SECTION ===
-        y = 190;
+        y = 210;
 
         doc.setTextColor(...primaryColor);
         doc.setFontSize(14);
@@ -243,6 +261,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             doc.setTextColor(...grayColor);
             doc.text("Aucune fonctionnalite specifique selectionnee.", 25, y);
+        }
+
+        // === DESCRIPTION DU PROJET ===
+        if (data.project_description && data.project_description.trim()) {
+            y += 15;
+            doc.setTextColor(...primaryColor);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Description du Projet", 20, y);
+
+            y += 10;
+            doc.setTextColor(...darkColor);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+
+            // Wrap text to fit page width
+            const splitText = doc.splitTextToSize(data.project_description, 170);
+            doc.text(splitText, 20, y);
         }
 
         // === FOOTER ===
@@ -291,7 +327,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     notes: JSON.stringify({
                         phone: data.user_phone || '',
                         company: data.user_company || '',
+                        sector: data.sector || '',
                         design_style: data.design_style,
+                        has_website: data.has_website || '',
+                        has_branding: data.has_branding || '',
+                        page_count: data.page_count || '',
+                        project_description: data.project_description || '',
                         budget: data.budget,
                         deadline: data.deadline,
                         features: data.features
@@ -315,11 +356,16 @@ document.addEventListener('DOMContentLoaded', () => {
             user_email: data.user_email,
             user_phone: data.user_phone,
             user_company: data.user_company,
+            sector: data.sector,
             project_type: data.project_type,
             design_style: data.design_style,
+            has_website: data.has_website,
+            has_branding: data.has_branding,
+            page_count: data.page_count,
+            project_description: data.project_description,
             budget: data.budget,
             deadline: data.deadline,
-            features: data.features.length > 0 ? data.features : [],
+            features: data.features && data.features.length > 0 ? data.features : [],
             pdf_url: pdfUrl
         };
 
@@ -333,16 +379,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const result = await response.json();
-
-            if (!response.ok) {
-                console.warn('Erreur API Email:', result.message);
-                // On ne bloque pas le flux utilisateur même si l'email échoue
-            } else {
-                console.log('Emails envoyés:', result.message);
-            }
+            console.log('📧 Réponse email:', result.message);
 
         } catch (error) {
-            console.error('Erreur réseau / fetch:', error);
+            console.error('Erreur envoi email:', error);
+            // On ne bloque pas le flux utilisateur même si l'email échoue
         }
     }
 
