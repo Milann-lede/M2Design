@@ -591,6 +591,41 @@ select.form-control {
 }
 
 /* Checkbox & Radio */
+
+/* Project Images in Table */
+.table img {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+}
+
+/* Project Cards Images (Recent Projects) */
+.project-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.project-list-item:last-child {
+    border-bottom: none;
+}
+
+.project-list-item img {
+    width: 60px; /* Taille réduite comme demandé */
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    order: 2;
+    margin-left: auto;
+}
+
+.project-list-infol {
+    flex: 1;
+}
+
 .form-check {
     display: flex;
     align-items: center;
@@ -634,6 +669,48 @@ select.form-control {
 
 .file-upload input[type="file"] {
     display: none;
+}
+
+/* Thumbnail Preview - Encadrement des images uploadées */
+.thumbnail-preview {
+    margin-top: var(--spacing-md);
+    position: relative;
+    max-width: 300px;
+    max-height: 200px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+}
+
+.thumbnail-preview img {
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.thumbnail-preview .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.thumbnail-preview:hover .remove-btn {
+    opacity: 1;
 }
 
 /* ============================================

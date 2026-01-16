@@ -56,6 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
             form.querySelectorAll('input[name="features"]:checked').forEach(cb => features.push(cb.value));
             data.features = features;
 
+            // Récupérer le breakdown depuis l'affichage HTML pour l'inclure dans le PDF
+            const breakdownItems = [];
+            document.querySelectorAll('#estimation-breakdown li').forEach(li => {
+                const spans = li.querySelectorAll('span');
+                if (spans.length >= 2) {
+                    breakdownItems.push({
+                        label: spans[0].textContent.trim(),
+                        value: spans[1].textContent.trim()
+                    });
+                }
+            });
+            data.breakdown = breakdownItems;
+
             // 1. Generate PDF Object (Doc)
             const doc = await generatePDFDoc(data);
 
@@ -424,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         y += 26;
 
-        // === 3. ESTIMATION - BANDEAU ===
+        // === 3. ESTIMATION - BANDEAU + DÉTAIL ===
         doc.setFillColor(...colors.primary);
         doc.rect(15, y, 3, 10, 'F');
         doc.setTextColor(...colors.secondary);
@@ -460,7 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.circle(118, y + 10, 6, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(9);
-        doc.text("J", 118, y + 12.5, { align: 'center' }); // "J" centré
+        doc.text("J", 118, y + 12.5, { align: 'center' });
 
         doc.setTextColor(...colors.textLight);
         doc.setFontSize(7);
@@ -472,6 +485,41 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.text(data.deadline || "A definir", 128, y + 15);
 
         y += 26;
+
+        // === 3b. DÉTAIL DU BREAKDOWN ===
+        if (data.breakdown && data.breakdown.length > 0) {
+            doc.setFillColor(...colors.background);
+            doc.roundedRect(15, y, 180, 6 + data.breakdown.length * 6, 3, 3, 'F');
+
+            let bY = y + 5;
+            doc.setFontSize(7);
+
+            data.breakdown.forEach((item, index) => {
+                // Ligne alternée pour lisibilité
+                if (index % 2 === 0) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(16, bY - 3, 178, 6, 'F');
+                }
+
+                // Label à gauche
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(...colors.textMain);
+                doc.text(item.label.substring(0, 40), 20, bY);
+
+                // Valeur à droite (couleur selon si c'est "Inclus" ou un prix)
+                if (item.value.toLowerCase() === 'inclus') {
+                    doc.setTextColor(...colors.success);
+                } else {
+                    doc.setTextColor(...colors.primary);
+                }
+                doc.setFont('helvetica', 'bold');
+                doc.text(item.value, 190, bY, { align: 'right' });
+
+                bY += 6;
+            });
+
+            y += 8 + data.breakdown.length * 6;
+        }
 
         // === 4. FONCTIONNALITÉS - LISTE HORIZONTALE ===
         doc.setFillColor(...colors.primary);

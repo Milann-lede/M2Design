@@ -105,6 +105,21 @@ $mail_admin = @mail($admin_email, $admin_subject, $admin_content, $headers_admin
 
 // === EMAIL 2: CONFIRMATION CLIENT ===
 $client_subject = "✅ Votre projet a bien été reçu - $site_name";
+
+// Construire le contenu avec ou sans lien PDF
+$pdf_section = "";
+if ($pdf_url && $pdf_url !== 'Téléchargé localement' && strpos($pdf_url, 'http') === 0) {
+    $pdf_section = "
+📄 VOTRE RÉCAPITULATIF PDF
+Téléchargez votre cahier des charges ici :
+$pdf_url
+";
+} else {
+    $pdf_section = "
+📄 Votre PDF récapitulatif a été téléchargé automatiquement sur votre appareil.
+";
+}
+
 $client_content = "
 Bonjour $user_name,
 
@@ -115,8 +130,7 @@ Nous avons bien reçu votre demande de projet « $project_type » !
 • Style visuel : $design_style
 • Budget estimé : $budget
 • Délai souhaité : $deadline
-
-📄 Votre PDF récapitulatif a été téléchargé automatiquement.
+$pdf_section
 
 🚀 PROCHAINES ÉTAPES
 Nous étudions votre cahier des charges et reviendrons vers vous sous 24-48h avec une proposition adaptée.
