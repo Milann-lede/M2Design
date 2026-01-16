@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.text((data.user_phone || "-").substring(0, 12), 125, y + 14);
         doc.text((data.user_company || "-").substring(0, 15), 160, y + 14);
 
-        y += 28;
+        y += 24;
 
         // === 2. DETAILS PROJET - GRILLE COMPACTE ===
         doc.setFillColor(...colors.primary);
@@ -428,14 +428,14 @@ document.addEventListener('DOMContentLoaded', () => {
         drawMiniCard("SECTEUR", data.sector, 77, y, 60);
         drawMiniCard("STYLE", data.design_style, 139, y, 56);
 
-        y += 20;
+        y += 18;
 
         // Ligne 2 : 3 cartes
         drawMiniCard("SITE EXISTANT", data.has_website, 15, y, 60);
         drawMiniCard("BRANDING", data.has_branding, 77, y, 60);
         drawMiniCard("NB PAGES", data.page_count, 139, y, 56);
 
-        y += 26;
+        y += 22;
 
         // === 3. ESTIMATION - BANDEAU + DÉTAIL ===
         doc.setFillColor(...colors.primary);
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFont('helvetica', 'bold');
         doc.text(data.deadline || "A definir", 128, y + 15);
 
-        y += 26;
+        y += 22;
 
         // === 3b. DÉTAIL DU BREAKDOWN (uniquement les éléments avec prix) ===
         // Filtrer pour ne garder que les éléments avec des prix (pas les "Inclus")
@@ -519,8 +519,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 bY += 6;
             });
 
-            y += 8 + pricedItems.length * 6;
+            y += 6 + pricedItems.length * 5;
         }
+
+        // Espace avant fonctionnalités
+        y += 10;
 
         // === 4. FONCTIONNALITÉS - LISTE HORIZONTALE ===
         doc.setFillColor(...colors.primary);
@@ -530,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFont('helvetica', 'bold');
         doc.text("Fonctionnalites", 22, y + 7);
 
-        y += 12;
+        y += 10;
 
         if (data.features && data.features.length > 0) {
             doc.setFontSize(8);
@@ -545,23 +548,23 @@ document.addEventListener('DOMContentLoaded', () => {
             let featY = y;
             col1.forEach((feat, i) => {
                 doc.setFillColor(...colors.success);
-                doc.circle(18, featY + i * 6, 1.2, 'F');
-                doc.text(feat.substring(0, 20), 22, featY + 2 + i * 6);
+                doc.circle(25, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 18), 29, featY + 2 + i * 6);
             });
 
             col2.forEach((feat, i) => {
                 doc.setFillColor(...colors.success);
-                doc.circle(80, featY + i * 6, 1.2, 'F');
-                doc.text(feat.substring(0, 20), 84, featY + 2 + i * 6);
+                doc.circle(85, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 18), 89, featY + 2 + i * 6);
             });
 
             col3.forEach((feat, i) => {
                 doc.setFillColor(...colors.success);
-                doc.circle(142, featY + i * 6, 1.2, 'F');
-                doc.text(feat.substring(0, 20), 146, featY + 2 + i * 6);
+                doc.circle(145, featY + i * 6, 1.2, 'F');
+                doc.text(feat.substring(0, 18), 149, featY + 2 + i * 6);
             });
 
-            y += Math.max(col1.length, col2.length, col3.length) * 6 + 6;
+            y += Math.max(col1.length, col2.length, col3.length) * 5 + 4;
         } else {
             doc.setFontSize(8);
             doc.setFont('helvetica', 'italic');
@@ -572,6 +575,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // === 5. DESCRIPTION - COMPACT ===
         if (data.project_description && data.project_description.trim()) {
+            // S'assurer que y ne dépasse pas 230 pour laisser de la place
+            if (y > 230) y = 230;
+
             y += 4;
             doc.setFillColor(...colors.primary);
             doc.rect(15, y, 3, 10, 'F');
@@ -580,17 +586,18 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.setFont('helvetica', 'bold');
             doc.text("Description", 22, y + 7);
 
-            y += 12;
+            y += 10;
 
+            // Boîte de description avec hauteur fixe
             doc.setFillColor(...colors.background);
-            doc.roundedRect(15, y, 180, 30, 3, 3, 'F');
+            doc.roundedRect(15, y, 180, 22, 3, 3, 'F');
 
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(...colors.textMain);
 
             const splitDesc = doc.splitTextToSize(data.project_description, 170);
-            doc.text(splitDesc.slice(0, 5), 20, y + 7); // Max 5 lignes
+            doc.text(splitDesc.slice(0, 4), 20, y + 8); // Max 4 lignes, texte descendu
         }
 
         // === FOOTER ===
@@ -684,6 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
             budget: data.budget,
             deadline: data.deadline,
             features: data.features && data.features.length > 0 ? data.features : [],
+            breakdown: data.breakdown || [], // Détail de l'estimation
             pdf_url: pdfUrl
         };
 
