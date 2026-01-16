@@ -7,6 +7,7 @@ const Toast = (function() {
 
     const container = document.getElementById('toastContainer');
     const DURATION = 5000;
+    const ERROR_DURATION = 15000; // 15 secondes pour les erreurs
 
     /**
      * Affiche une notification toast
@@ -42,10 +43,11 @@ const Toast = (function() {
             removeToast(toast);
         });
 
-        // Auto-fermeture
+        // Auto-fermeture (plus long pour les erreurs)
+        const duration = type === 'error' ? ERROR_DURATION : DURATION;
         setTimeout(() => {
             removeToast(toast);
-        }, DURATION);
+        }, duration);
     }
 
     /**

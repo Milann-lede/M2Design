@@ -92,13 +92,13 @@ const BriefsManager = (function () {
                         <a href="${brief.pdf_url}" target="_blank" class="action-btn download" title="Voir PDF">
                             <i class="fas fa-external-link-alt"></i>
                         </a>
-                        <button type="button" class="action-btn edit" title="Marquer comme consulté" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus('${brief.id}', 'consulte')">
+                        <button type="button" class="action-btn edit" title="Marquer comme consulté" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus(${brief.id}, 'consulte')">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button type="button" class="action-btn view" title="Archiver" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus('${brief.id}', 'archive')">
+                        <button type="button" class="action-btn view" title="Archiver" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.updateStatus(${brief.id}, 'archive')">
                             <i class="fas fa-archive"></i>
                         </button>
-                        <button type="button" class="action-btn delete" title="Supprimer" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.deleteBrief('${brief.id}')">
+                        <button type="button" class="action-btn delete" title="Supprimer" onclick="event.preventDefault(); event.stopPropagation(); BriefsManager.deleteBrief(${brief.id})">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -154,13 +154,16 @@ const BriefsManager = (function () {
         const client = AdminAuth.getClient();
         if (!client) return;
 
+        // Convertir en nombre si c'est une string
+        const id = typeof briefId === 'string' ? parseInt(briefId, 10) : briefId;
+
         try {
             const updateData = { status: newStatus };
 
             const { error } = await client
                 .from('client_briefs')
                 .update(updateData)
-                .eq('id', briefId);
+                .eq('id', id);
 
             if (error) throw error;
 
@@ -205,14 +208,135 @@ const BriefsManager = (function () {
      * Supprime un brief (Base de données + Fichier Storage)
      */
     async function deleteBrief(briefId) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer ce brief ?\nCette action est irréversible et supprimera également le PDF associé.')) {
+        // Convertir en nombre si c'est une string
+        const id = typeof briefId === 'string' ? parseInt(briefId, 10) : briefId;
+        
+        // Afficher une modal de confirmation personnalisée
+        showDeleteConfirmModal(id);
+    }
+
+    /**
+     * Affiche la modal de confirmation de suppression
+     */
+    function showDeleteConfirmModal(briefId) {
+        // Supprimer une modal existante si présente
+        const existingModal = document.getElementById('deleteConfirmModal');
+        if (existingModal) existingModal.remove();
+
+        // Créer la modal
+        const modal = document.createElement('div');
+        modal.id = 'deleteConfirmModal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        `;
+
+        modal.innerHTML = `
+            <div style="
+                background: #1E293B;
+                padding: 2rem;
+                border-radius: 12px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                text-align: center;
+                border: 1px solid #334155;
+            ">
+                <div style="
+                    width: 60px;
+                    height: 60px;
+                    background: rgba(220, 38, 38, 0.2);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 1rem;
+                ">
+                    <i class="fas fa-trash-alt" style="font-size: 1.5rem; color: #EF4444;"></i>
+                </div>
+                <h3 style="margin-bottom: 0.5rem; color: #F1F5F9;">Confirmer la suppression</h3>
+                <p style="color: #94A3B8; margin-bottom: 1.5rem;">
+                    Êtes-vous sûr de vouloir supprimer ce brief ?<br>
+                    <strong style="color: #EF4444;">Cette action est irréversible.</strong>
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="cancelDeleteBtn" style="
+                        padding: 0.75rem 1.5rem;
+                        border: 1px solid #475569;
+                        background: #334155;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        color: #CBD5E1;
+                    ">Annuler</button>
+                    <button id="confirmDeleteBtn" style="
+                        padding: 0.75rem 1.5rem;
+                        border: none;
+                        background: #DC2626;
+                        color: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 500;
+                    ">Supprimer</button>
+                </div>
+                <div id="deleteStatus" style="margin-top: 1rem; display: none; color: #94A3B8;"></div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Événements
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+            modal.remove();
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+            await executeDelete(briefId, modal);
+        });
+
+        // Fermer en cliquant en dehors
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    /**
+     * Exécute réellement la suppression
+     */
+    async function executeDelete(briefId, modal) {
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        const cancelBtn = document.getElementById('cancelDeleteBtn');
+        const statusDiv = document.getElementById('deleteStatus');
+
+        // Désactiver les boutons et montrer le statut
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suppression...';
+        cancelBtn.disabled = true;
+        statusDiv.style.display = 'block';
+        statusDiv.textContent = 'Suppression en cours...';
+
+        const client = AdminAuth.getClient();
+        if (!client) {
+            statusDiv.innerHTML = '<span style="color: #DC2626;">❌ Erreur: Non connecté</span>';
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Réessayer';
+            cancelBtn.disabled = false;
             return;
         }
 
-        const client = AdminAuth.getClient();
-        if (!client) return;
-
         try {
+            statusDiv.textContent = '1/3 - Récupération des infos...';
+
             // 1. Récupérer l'URL du PDF pour le supprimer du Storage
             const { data: brief, error: fetchError } = await client
                 .from('client_briefs')
@@ -220,26 +344,33 @@ const BriefsManager = (function () {
                 .eq('id', briefId)
                 .single();
 
-            if (fetchError) throw fetchError;
+            if (fetchError) {
+                console.error('Erreur récupération brief:', fetchError);
+                statusDiv.innerHTML = `<span style="color: #DC2626;">❌ Erreur: ${fetchError.message || 'Brief non trouvé'}</span>`;
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Réessayer';
+                cancelBtn.disabled = false;
+                return;
+            }
+
+            statusDiv.textContent = '2/3 - Suppression du PDF...';
 
             // 2. Supprimer le fichier du Storage si l'URL existe
             if (brief && brief.pdf_url) {
                 try {
-                    // Extraction du chemin relatif depuis l'URL
-                    // Ex: .../briefs/nom_fichier.pdf
                     const urlParts = brief.pdf_url.split('/briefs/');
                     if (urlParts.length > 1) {
-                        const fileName = urlParts[1];
-                        const { error: storageError } = await client.storage
+                        const fileName = decodeURIComponent(urlParts[1].split('?')[0]);
+                        await client.storage
                             .from('project-images')
                             .remove([`briefs/${fileName}`]);
-
-                        if (storageError) console.warn('Erreur suppression storage:', storageError);
                     }
                 } catch (storageErr) {
-                    console.warn('Erreur lors du traitement du chemin storage:', storageErr);
+                    console.warn('Erreur storage (non bloquante):', storageErr);
                 }
             }
+
+            statusDiv.textContent = '3/3 - Suppression de la base...';
 
             // 3. Supprimer l'enregistrement en base de données
             const { error: deleteError } = await client
@@ -247,14 +378,31 @@ const BriefsManager = (function () {
                 .delete()
                 .eq('id', briefId);
 
-            if (deleteError) throw deleteError;
+            if (deleteError) {
+                console.error('Erreur suppression DB:', deleteError);
+                statusDiv.innerHTML = `<span style="color: #DC2626;">❌ Erreur DB: ${deleteError.message || deleteError.code || 'Erreur inconnue'}</span>`;
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Réessayer';
+                cancelBtn.disabled = false;
+                return;
+            }
 
-            Toast.success('Succès', 'Brief et PDF supprimés');
-            loadBriefs(); // Recharger la liste
+            // Succès !
+            statusDiv.innerHTML = '<span style="color: #16A34A;">✅ Brief supprimé avec succès !</span>';
+            
+            setTimeout(() => {
+                modal.remove();
+                Toast.success('Succès', 'Brief et PDF supprimés');
+                loadBriefs(); // Recharger la liste
+            }, 1000);
 
         } catch (err) {
             console.error('Erreur suppression brief:', err);
-            Toast.error('Erreur', 'Impossible de supprimer le brief');
+            const errorMsg = err.message || err.details || JSON.stringify(err);
+            statusDiv.innerHTML = `<span style="color: #DC2626;">❌ Erreur: ${errorMsg}</span>`;
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Réessayer';
+            cancelBtn.disabled = false;
         }
     }
 

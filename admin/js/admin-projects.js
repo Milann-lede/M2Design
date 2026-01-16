@@ -416,8 +416,8 @@ const ProjectsManager = (function () {
 
         if (search) {
             filtered = filtered.filter(p =>
-                p.name.toLowerCase().includes(search) ||
-                (p.short_description && p.short_description.toLowerCase().includes(search))
+                p.title.toLowerCase().includes(search) ||
+                (p.short_desc && p.short_desc.toLowerCase().includes(search))
             );
         }
 
@@ -648,11 +648,12 @@ const ProjectsManager = (function () {
      */
     function deleteProject(projectId) {
         currentProjectId = projectId;
-        const project = projects.find(p => p.id === projectId);
+        // Conversion en nombre pour la recherche
+        const project = projects.find(p => p.id == projectId);
 
         if (project) {
             document.getElementById('deleteModalText').textContent =
-                `Êtes-vous sûr de vouloir supprimer "${project.name}" ?`;
+                `Êtes-vous sûr de vouloir supprimer "${project.title}" ?`;
         }
 
         deleteModal.classList.add('active');
