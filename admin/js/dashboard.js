@@ -136,28 +136,47 @@ function initLogout() {
     const logoutCancelBtn = document.getElementById('logoutCancelBtn');
     const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
 
+    // Fonction helper pour ouvrir le modal
+    function openLogoutModal() {
+        logoutModal.hidden = false;
+        logoutModal.classList.add('active');
+    }
+
+    // Fonction helper pour fermer le modal
+    function closeLogoutModal() {
+        logoutModal.classList.remove('active');
+        logoutModal.hidden = true;
+    }
+
     // Ouvrir le modal
     logoutBtn?.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        logoutModal.hidden = false;
+        openLogoutModal();
     });
 
     // Annuler
     logoutCancelBtn?.addEventListener('click', function () {
-        logoutModal.hidden = true;
+        closeLogoutModal();
     });
 
     // Confirmer la déconnexion
     logoutConfirmBtn?.addEventListener('click', async function () {
-        logoutModal.hidden = true;
+        closeLogoutModal();
         await AdminAuth.logout();
     });
 
     // Fermer si clic sur l'overlay (fond sombre)
     logoutModal?.addEventListener('click', function (e) {
         if (e.target === logoutModal) {
-            logoutModal.hidden = true;
+            closeLogoutModal();
+        }
+    });
+
+    // Fermer avec la touche Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && logoutModal && !logoutModal.hidden) {
+            closeLogoutModal();
         }
     });
 }
