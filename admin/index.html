@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard | ModernWeb</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Overlay (mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="logo-text">Modern<span class="logo-accent">Web</span></span>
+                    <span class="logo-badge">Admin</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Principal</span>
+                    <a href="index.html" class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#projects" class="nav-item" data-page="projects">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Projets</span>
+                    </a>
+                    <a href="#briefs" class="nav-item" data-page="briefs">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Briefs clients</span>
+                        <span class="badge" id="newBriefsCount" hidden>0</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Contenu</span>
+                    <a href="#reviews" class="nav-item" data-page="reviews">
+                        <i class="fas fa-star"></i>
+                        <span>Avis clients</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Système</span>
+                    <a href="#settings" class="nav-item" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-menu" id="userMenu">
+                    <div class="user-avatar">M</div>
+                    <div class="user-info">
+                        <div class="user-name">Milan</div>
+                        <div class="user-role">Administrateur</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <a href="../index.html" target="_blank" class="header-btn" title="Voir le site">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <button class="header-btn" id="logoutBtn" title="Déconnexion">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Dashboard Overview (default page) -->
+                <section id="page-dashboard" class="page-section active">
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="statProjects">-</div>
+                                <div class="stat-label">Projets publiés</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="statReviews">-</div>
+                                <div class="stat-label">Avis clients</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="statBriefs">-</div>
+                                <div class="stat-label">Briefs reçus</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon info">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="statPending">-</div>
+                                <div class="stat-label">En attente</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Actions rapides</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn" data-action="new-project">
+                                        <i class="fas fa-plus"></i>
+                                        Nouveau projet
+                                    </button>
+                                    <button class="quick-action-btn" data-action="view-briefs">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Voir les briefs
+                                    </button>
+                                    <button class="quick-action-btn" data-action="view-reviews">
+                                        <i class="fas fa-star"></i>
+                                        Voir les avis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Derniers projets</h2>
+                            </div>
+                            <div class="card-body" id="recentProjects">
+                                <div class="loading-spinner">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects Page -->
+                <section id="page-projects" class="page-section">
+                    <div class="section-header">
+                        <h2>Gestion des projets</h2>
+                        <button class="btn btn-primary" id="addProjectBtn">
+                            <i class="fas fa-plus"></i>
+                            Nouveau projet
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-bar">
+                        <div class="filter-group">
+                            <select class="form-control" id="filterStatus">
+                                <option value="">Tous les statuts</option>
+                                <option value="en_cours">En cours</option>
+                                <option value="termine">Terminé</option>
+                                <option value="publie">Publié</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="form-control" id="filterCategory">
+                                <option value="">Toutes les catégories</option>
+                                <option value="nature">Nature</option>
+                                <option value="tech">Tech</option>
+                                <option value="gaming">Gaming</option>
+                                <option value="construction">Construction</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control" id="searchProjects" placeholder="Rechercher...">
+                        </div>
+                    </div>
+
+                    <!-- Projects List -->
+                    <div class="card">
+                        <div class="table-container">
+                            <table class="table" id="projectsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Projet</th>
+                                        <th>Client</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projectsTableBody">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="projectsEmpty" class="empty-state" hidden>
+                            <i class="fas fa-folder-open"></i>
+                            <h3>Aucun projet</h3>
+                            <p>Commencez par créer votre premier projet</p>
+                            <button class="btn btn-primary" id="addProjectEmptyBtn">
+                                <i class="fas fa-plus"></i>
+                                Nouveau projet
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Briefs Page -->
+                <section id="page-briefs" class="page-section">
+                    <div class="section-header">
+                        <h2>Briefs clients</h2>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-bar">
+                        <div class="filter-group">
+                            <select class="form-control" id="filterBriefStatus">
+                                <option value="">Tous les statuts</option>
+                                <option value="nouveau">Nouveau</option>
+                                <option value="consulte">Consulté</option>
+                                <option value="archive">Archivé</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control" id="searchBriefs"
+                                placeholder="Rechercher un client...">
+                        </div>
+                    </div>
+
+                    <!-- Briefs List -->
+                    <div class="card">
+                        <div class="table-container">
+                            <table class="table" id="briefsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Type de projet</th>
+                                        <th>Fichier</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="briefsTableBody">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="briefsEmpty" class="empty-state" hidden>
+                            <i class="fas fa-file-pdf"></i>
+                            <h3>Aucun brief</h3>
+                            <p>Les briefs clients apparaîtront ici</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reviews Page -->
+                <section id="page-reviews" class="page-section">
+                    <div class="section-header">
+                        <h2>Avis clients</h2>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="card">
+                        <div class="table-container">
+                            <table class="table" id="reviewsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Avis</th>
+                                        <th>Note</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reviewsTableBody">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="reviewsEmpty" class="empty-state" hidden>
+                            <i class="fas fa-star"></i>
+                            <h3>Aucun avis</h3>
+                            <p>Les avis clients apparaîtront ici</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Page -->
+                <section id="page-settings" class="page-section">
+                    <div class="section-header">
+                        <h2>Paramètres</h2>
+                    </div>
+
+                    <div class="settings-grid">
+                        <!-- Change Password -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-lock"></i>
+                                    Changer le mot de passe
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="changePasswordForm">
+                                    <div class="form-group">
+                                        <label for="currentPassword">Mot de passe actuel</label>
+                                        <input type="password" id="currentPassword" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">Nouveau mot de passe</label>
+                                        <input type="password" id="newPassword" class="form-control" required
+                                            minlength="8">
+                                        <span class="form-hint">Minimum 8 caractères</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                                        <input type="password" id="confirmPassword" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i>
+                                        Enregistrer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Account Info -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user"></i>
+                                    Compte administrateur
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-row">
+                                    <span class="info-label">Email</span>
+                                    <span class="info-value" id="adminEmail">milan.led@icloud.com</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Dernière connexion</span>
+                                    <span class="info-value" id="lastLogin">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 class="modal-title" id="projectModalTitle">Nouveau projet</h2>
+                <button class="modal-close" id="projectModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <input type="hidden" id="projectId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectName">Nom du projet *</label>
+                            <input type="text" id="projectName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectSlug">Slug (URL)</label>
+                            <input type="text" id="projectSlug" class="form-control" placeholder="mon-projet">
+                            <span class="form-hint">Généré automatiquement si vide</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectClientType">Type de client</label>
+                            <select id="projectClientType" class="form-control">
+                                <option value="particulier">Particulier</option>
+                                <option value="professionnel">Professionnel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType">Type de projet</label>
+                            <select id="projectType" class="form-control">
+                                <option value="site_vitrine">Site Vitrine</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="portfolio">Portfolio</option>
+                                <option value="gaming">Site Gaming</option>
+                                <option value="application">Application Web</option>
+                                <option value="immobilier">Immobilier</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectCategory">Thème visuel</label>
+                            <select id="projectCategory" class="form-control">
+                                <option value="auto" selected>🪄 Automatique (détection IA)</option>
+                                <option value="nature">🌿 Nature (vert)</option>
+                                <option value="tech">💼 Tech (bordeaux)</option>
+                                <option value="gaming">🎮 Gaming (néon violet)</option>
+                                <option value="default">📦 Standard (bleu)</option>
+                            </select>
+                            <small class="form-hint">En mode auto, le thème s'adapte au type de projet</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectShortDesc">Description courte</label>
+                        <input type="text" id="projectShortDesc" class="form-control" maxlength="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectFullDesc">Description complète</label>
+                        <textarea id="projectFullDesc" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectTechnologies">Technologies (séparées par des virgules)</label>
+                        <input type="text" id="projectTechnologies" class="form-control"
+                            placeholder="HTML, CSS, JavaScript">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectDate">Date du projet</label>
+                            <input type="date" id="projectDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectStatus">Statut</label>
+                            <select id="projectStatus" class="form-control">
+                                <option value="en_cours">En cours</option>
+                                <option value="termine">Terminé</option>
+                                <option value="publie">Publié</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectLink">Lien externe</label>
+                        <input type="url" id="projectLink" class="form-control" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Image principale</label>
+                        <div class="file-upload" id="thumbnailUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Glissez une image ou cliquez pour sélectionner</p>
+                            <input type="file" id="projectThumbnail" accept="image/*">
+                        </div>
+                        <div id="thumbnailPreview" class="thumbnail-preview" hidden></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-check">
+                            <input type="checkbox" id="projectFeatured">
+                            Mettre en avant sur la page d'accueil
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="projectModalCancel">Annuler</button>
+                <button type="submit" form="projectForm" class="btn btn-primary" id="projectModalSave">
+                    <i class="fas fa-save"></i>
+                    Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmer la suppression</h2>
+                <button class="modal-close" id="deleteModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalText">Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+                <p class="text-muted">Cette action est irréversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="deleteModalCancel">Annuler</button>
+                <button type="button" class="btn btn-danger" id="deleteModalConfirm">
+                    <i class="fas fa-trash"></i>
+                    Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin-auth.js"></script>
+    <script src="js/admin-toast.js"></script>
+    <script src="js/admin-projects.js"></script>
+    <script src="js/admin-briefs.js"></script>
+    <script src="js/admin-reviews.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

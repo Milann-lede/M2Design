@@ -97,7 +97,7 @@ class CookieConsent {
                 </div>
 
                 <div class="cookie-links">
-                    <a href="pages/confidentialite.html">Politique de confidentialité</a>
+                    <a href="/pages/confidentialite.html">Politique de confidentialité</a>
                 </div>
             </div>
         `;

@@ -1,79 +1,102 @@
+/**
+ * ModernWeb - Script Principal
+ * 
+ * Architecture modulaire :
+ * - Navigation mobile
+ * - Chargement des avis (page d'accueil)
+ * - Filtres portfolio
+ * - Modal projet
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // ==========================================
-    // 1. Mobile Menu Toggle
-    // ==========================================
+    initMobileMenu();
+    loadHomeReviews();
+    initPortfolioFilters();
+    initProjectModal();
+});
+
+// ==========================================
+// Navigation Mobile
+// ==========================================
+
+function initMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+    if (!hamburger || !navLinks) return;
 
-            // Toggle icon
-            const icon = hamburger.querySelector('i');
-            if (icon) {
-                if (navLinks.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            }
-        });
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        toggleHamburgerIcon(hamburger, navLinks.classList.contains('active'));
+    });
 
-        // Close menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = hamburger.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+    // Ferme le menu au clic sur un lien
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            toggleHamburgerIcon(hamburger, false);
         });
+    });
+}
+
+function toggleHamburgerIcon(hamburger, isOpen) {
+    const icon = hamburger.querySelector('i');
+    if (!icon) return;
+
+    icon.classList.toggle('fa-bars', !isOpen);
+    icon.classList.toggle('fa-times', isOpen);
+}
+
+// ==========================================
+// Avis Clients (Page d'accueil)
+// ==========================================
+
+async function loadHomeReviews() {
+    const container = document.getElementById('home-testimonials');
+    if (!container) return;
+
+    if (typeof SupabaseService === 'undefined') {
+        console.error('SupabaseService non disponible');
+        container.innerHTML = '<p class="text-center text-danger">Erreur: Service indisponible</p>';
+        return;
     }
 
-    // ==========================================
-    // 2. Load Reviews for Home Page
-    // ==========================================
-    loadHomeReviews();
+    try {
+        const { data: reviews, error } = await SupabaseService.getReviews();
 
-    // Initialize Portfolio Filters
-    initPortfolioFilters();
+        if (error) {
+            console.error('Erreur chargement avis:', error);
+            container.innerHTML = '<p class="text-center text-danger">Impossible de charger les avis.</p>';
+            return;
+        }
 
-    async function loadHomeReviews() {
-        const testimonialsContainer = document.getElementById('home-testimonials');
-        if (!testimonialsContainer) return; // Exit if not on home page
+        container.innerHTML = '';
 
-        // Helper: Create Review HTML (Matches avis.js style)
-        function createReviewElement(review) {
-            const div = document.createElement('article');
-            div.className = 'review-item fade-in-up';
+        if (!reviews || reviews.length === 0) {
+            container.innerHTML = '<p class="text-center">Aucun avis pour le moment.</p>';
+            return;
+        }
 
-            // Stars
-            const stars = Array(5).fill(0).map((_, i) =>
-                `<i class="${i < review.rating ? 'fas' : 'far'} fa-star"></i>`
-            ).join('');
+        // Affiche les 3 derniers avis
+        reviews.slice(0, 3).forEach(review => {
+            container.appendChild(createReviewElement(review));
+        });
 
-            // Date
-            const date = new Date(review.created_at).toLocaleDateString('fr-FR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+    } catch (err) {
+        console.error('Erreur inattendue:', err);
+        container.innerHTML = '<p class="text-center text-danger">Erreur inattendue.</p>';
+    }
+}
 
-            // Avatar
-            let avatarHtml = '';
-            if (review.avatar_url) {
-                avatarHtml = `<img src="${review.avatar_url}" alt="${review.name}" style="width: 50px; height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; flex-shrink: 0;" onerror="this.onerror=null; this.parentNode.innerHTML='<div style=\\'width: 50px; height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%; background: #F8FAFC; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;\\'><img src=\\'data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'%23CBD5E1\\'%3E%3Cpath d=\\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\\'/%3E%3C/svg%3E\\' style=\\'width: 60%; height: 60%; object-fit: contain; opacity: 0.8;\\'></div>'">`;
-            } else {
-                const defaultAvatar = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23CBD5E1'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
-                avatarHtml = `<div style="width: 50px; height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%; background: #F8FAFC; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;"><img src="${defaultAvatar}" alt="Default Avatar" style="width: 60%; height: 60%; object-fit: contain; opacity: 0.8;"></div>`;
-            }
+function createReviewElement(review) {
+    const article = document.createElement('article');
+    article.className = 'review-item fade-in-up';
 
-            div.innerHTML = `
+    const stars = createStarsHtml(review.rating);
+    const date = formatDateFr(review.created_at);
+    const avatarHtml = createAvatarHtml(review.avatar_url, review.name);
+
+    article.innerHTML = `
         <div class="review-header">
             <div style="display: flex; align-items: center;">
                 ${avatarHtml}
@@ -87,196 +110,162 @@ document.addEventListener('DOMContentLoaded', () => {
         <p class="review-content">${review.message}</p>
         <span class="review-date">Posté le ${date}</span>
     `;
-            return div;
-        }
 
-        try {
-            if (typeof SupabaseService === 'undefined') {
-                console.error("SupabaseService not found.");
-                testimonialsContainer.innerHTML = '<p class="text-center text-danger">Erreur: Service indisponible</p>';
-                return;
-            }
+    return article;
+}
 
-            const { data: reviews, error } = await SupabaseService.getReviews();
+function createStarsHtml(rating) {
+    return Array(5).fill(0).map((_, i) =>
+        `<i class="${i < rating ? 'fas' : 'far'} fa-star"></i>`
+    ).join('');
+}
 
-            if (error) {
-                console.error('Error fetching reviews:', error);
-                testimonialsContainer.innerHTML = '<p class="text-center text-danger">Impossible de charger les avis.</p>';
-                return;
-            }
+function formatDateFr(dateString) {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
 
-            testimonialsContainer.innerHTML = ''; // Clear loader
+function createAvatarHtml(avatarUrl, name) {
+    const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23CBD5E1'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
+    const avatarStyles = 'width: 50px; height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; flex-shrink: 0;';
+    const containerStyles = 'width: 50px; height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%; background: #F8FAFC; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;';
 
-            if (!reviews || reviews.length === 0) {
-                testimonialsContainer.innerHTML = '<p class="text-center">Aucun avis pour le moment.</p>';
-                return;
-            }
-
-            // Display top 3 reviews
-            const recentReviews = reviews.slice(0, 3);
-            recentReviews.forEach(review => {
-                testimonialsContainer.appendChild(createReviewElement(review));
-            });
-
-        } catch (err) {
-            console.error('Unexpected error loading reviews:', err);
-            testimonialsContainer.innerHTML = '<p class="text-center text-danger">Erreur inattendue.</p>';
-        }
+    if (avatarUrl) {
+        return `<img src="${avatarUrl}" alt="${name}" style="${avatarStyles}" onerror="this.style.display='none'">`;
     }
+    
+    return `<div style="${containerStyles}"><img src="${DEFAULT_AVATAR}" alt="Avatar" style="width: 60%; height: 60%; object-fit: contain; opacity: 0.8;"></div>`;
+}
 
-    function initPortfolioFilters() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.premium-project-card');
-        const mobileFilterToggle = document.querySelector('.mobile-filter-toggle');
-        const filterWrapper = document.querySelector('.filter-buttons-wrapper');
-        const filterToggleText = mobileFilterToggle ? mobileFilterToggle.querySelector('span') : null;
+// ==========================================
+// Filtres Portfolio
+// ==========================================
 
-        // 1. Mobile Toggle Logic
-        if (mobileFilterToggle && filterWrapper) {
-            mobileFilterToggle.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent immediate closing
-                filterWrapper.classList.toggle('active');
-                const icon = mobileFilterToggle.querySelector('.filter-icon-right');
-                if (icon) {
-                    if (filterWrapper.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-up');
-                    } else {
-                        icon.classList.add('fa-chevron-down');
-                        icon.classList.remove('fa-chevron-up');
-                    }
-                }
-            });
+function initPortfolioFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.premium-project-card');
+    const mobileToggle = document.querySelector('.mobile-filter-toggle');
+    const filterWrapper = document.querySelector('.filter-buttons-wrapper');
 
-            // Close on click outside
-            document.addEventListener('click', (e) => {
-                if (!filterWrapper.contains(e.target) && !mobileFilterToggle.contains(e.target)) {
-                    filterWrapper.classList.remove('active');
-                    const icon = mobileFilterToggle.querySelector('.filter-icon-right');
-                    if (icon) {
-                        icon.classList.add('fa-chevron-down');
-                        icon.classList.remove('fa-chevron-up');
-                    }
-                }
-            });
-        }
+    if (filterButtons.length === 0 || projectCards.length === 0) return;
 
-        // 2. Filter Logic
-        if (filterButtons.length > 0 && projectCards.length > 0) {
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Update Active State
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    // Update Mobile Text
-                    if (filterToggleText) {
-                        filterToggleText.textContent = button.textContent;
-                    }
-
-                    // Close Mobile Menu
-                    if (filterWrapper) {
-                        filterWrapper.classList.remove('active');
-                        const icon = mobileFilterToggle ? mobileFilterToggle.querySelector('.filter-icon-right') : null;
-                        if (icon) {
-                            icon.classList.add('fa-chevron-down');
-                            icon.classList.remove('fa-chevron-up');
-                        }
-                    }
-
-                    // Filter Items
-                    const filter = button.getAttribute('data-filter');
-
-                    projectCards.forEach(card => {
-                        const category = card.getAttribute('data-category');
-
-                        if (filter === 'all' || category === filter) {
-                            // Reset to default display (grid on desktop, flex on mobile via CSS)
-                            card.style.removeProperty('display');
-
-                            // If we are on mobile (check w/ matchMedia or just let CSS handle it), 
-                            // we need to make sure we don't force 'grid' if CSS wants 'flex'.
-                            // Removing the property lets CSS take over, which has !important on mobile.
-
-                            // Wait, if we set 'none' !important previously, removing it is enough.
-
-                            // Reset animation
-                            card.style.animation = 'none';
-                            card.offsetHeight; /* trigger reflow */
-                            card.style.animation = 'fadeInUp 0.6s ease forwards';
-                        } else {
-                            card.style.setProperty('display', 'none', 'important');
-                        }
-                    });
-                });
-            });
-        }
-    }
-    // ==========================================
-    // 3. Project Details Modal
-    // ==========================================
-    initProjectModal();
-
-    function initProjectModal() {
-        const modal = document.querySelector('.project-modal-overlay');
-        const closeBtn = document.querySelector('.modal-close-btn');
-        const openBtns = document.querySelectorAll('.open-project-modal');
-
-        if (!modal) return;
-
-        // Elements to populate
-        const modalTitle = modal.querySelector('.modal-title');
-        const modalCategory = modal.querySelector('.modal-category');
-        const modalDesc = modal.querySelector('.modal-desc');
-        const modalDuration = modal.querySelector('.modal-duration');
-        const modalClient = modal.querySelector('.modal-client');
-        const modalLink = modal.querySelector('.modal-project-link');
-
-        // Open Modal
-        openBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                // Get Data
-                const title = btn.getAttribute('data-title');
-                const category = btn.getAttribute('data-category');
-                const desc = btn.getAttribute('data-desc');
-                const duration = btn.getAttribute('data-duration');
-                const client = btn.getAttribute('data-client');
-                const link = btn.getAttribute('href');
-
-                // Populate
-                modalTitle.textContent = title;
-                modalCategory.textContent = category;
-                modalDesc.textContent = desc;
-                if (modalDuration) modalDuration.textContent = duration;
-                if (modalClient) modalClient.textContent = client;
-                if (modalLink) modalLink.setAttribute('href', link);
-
-                // Show
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
-            });
+    // Toggle mobile
+    if (mobileToggle && filterWrapper) {
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            filterWrapper.classList.toggle('active');
+            updateFilterIcon(mobileToggle, filterWrapper.classList.contains('active'));
         });
 
-        // Close Logic
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        if (closeBtn) closeBtn.addEventListener('click', closeModal);
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // Escape Key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
+        document.addEventListener('click', (e) => {
+            if (!filterWrapper.contains(e.target) && !mobileToggle.contains(e.target)) {
+                filterWrapper.classList.remove('active');
+                updateFilterIcon(mobileToggle, false);
             }
         });
     }
 
-});
+    const toggleText = mobileToggle?.querySelector('span');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            if (toggleText) toggleText.textContent = button.textContent;
+
+            if (filterWrapper) {
+                filterWrapper.classList.remove('active');
+                updateFilterIcon(mobileToggle, false);
+            }
+
+            filterProjects(projectCards, button.getAttribute('data-filter'));
+        });
+    });
+}
+
+function filterProjects(cards, filter) {
+    cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const shouldShow = filter === 'all' || category === filter;
+
+        if (shouldShow) {
+            card.style.removeProperty('display');
+            card.style.animation = 'none';
+            card.offsetHeight; // Force reflow
+            card.style.animation = 'fadeInUp 0.6s ease forwards';
+        } else {
+            card.style.setProperty('display', 'none', 'important');
+        }
+    });
+}
+
+function updateFilterIcon(toggle, isOpen) {
+    const icon = toggle?.querySelector('.filter-icon-right');
+    if (!icon) return;
+
+    icon.classList.toggle('fa-chevron-down', !isOpen);
+    icon.classList.toggle('fa-chevron-up', isOpen);
+}
+
+// ==========================================
+// Modal Projet
+// ==========================================
+
+function initProjectModal() {
+    const modal = document.querySelector('.project-modal-overlay');
+    if (!modal) return;
+
+    const closeBtn = document.querySelector('.modal-close-btn');
+    const openBtns = document.querySelectorAll('.open-project-modal');
+
+    const elements = {
+        title: modal.querySelector('.modal-title'),
+        category: modal.querySelector('.modal-category'),
+        desc: modal.querySelector('.modal-desc'),
+        duration: modal.querySelector('.modal-duration'),
+        client: modal.querySelector('.modal-client'),
+        link: modal.querySelector('.modal-project-link')
+    };
+
+    openBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            populateModal(elements, btn);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => e.target === modal && closeModal());
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+}
+
+function populateModal(elements, btn) {
+    const data = {
+        title: btn.getAttribute('data-title'),
+        category: btn.getAttribute('data-category'),
+        desc: btn.getAttribute('data-desc'),
+        duration: btn.getAttribute('data-duration'),
+        client: btn.getAttribute('data-client'),
+        link: btn.getAttribute('href')
+    };
+
+    if (elements.title) elements.title.textContent = data.title;
+    if (elements.category) elements.category.textContent = data.category;
+    if (elements.desc) elements.desc.textContent = data.desc;
+    if (elements.duration) elements.duration.textContent = data.duration;
+    if (elements.client) elements.client.textContent = data.client;
+    if (elements.link) elements.link.setAttribute('href', data.link);
+}

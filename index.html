@@ -121,7 +121,7 @@
             </div>
             <ul class="nav-links">
                 <li><a href="index.html" class="nav-link active">Accueil</a></li>
-                <li><a href="pages/Nos Réalisations.html" class="nav-link">Réalisations</a></li>
+                <li><a href="pages/realisations.html" class="nav-link">Réalisations</a></li>
                 <li><a href="pages/avis.html" class="nav-link">Avis</a></li>
                 <li><a href="pages/contact.html" class="nav-link">Contact</a></li>
             </ul>
@@ -137,7 +137,7 @@
 
 
             <div class="container hero-content">
-                <h1>Votre <span class="text-gradient">Agence Web à Lille</span></h1>
+                <h1>Votre <span class="text-gradient">Agence Web</span></h1>
                 <br>
                 <p class="hero-subtitle">
                     Création de sites internet modernes et performants pour les entreprises de la métropole lilloise.
@@ -146,7 +146,7 @@
                     <a href="pages/contact.html" class="btn btn-primary">
                         Lancer mon projet <i class="fas fa-arrow-right ml-2"></i>
                     </a>
-                    <a href="pages/Nos Réalisations.html" class="btn btn-outline">
+                    <a href="pages/realisations.html" class="btn btn-outline">
                         Voir nos réalisations
                     </a>
                 </div>
@@ -161,8 +161,8 @@
                     <!-- Card 1 -->
                     <div class="marketing-card">
                         <div class="card-image">
-                            <img src="images/marketing_card_1.webp" alt="Création site web entreprise Lille" width="800"
-                                height="600" loading="lazy">
+                            <img src="images/marketing_card_1_new.png" alt="Création site web entreprise Lille"
+                                width="800" height="600" loading="lazy">
                         </div>
                         <div class="card-content">
                             <div class="card-number">1</div>
@@ -187,8 +187,8 @@
                     <!-- Card 2 -->
                     <article class="marketing-card alt">
                         <div class="card-image">
-                            <img src="https://picsum.photos/seed/m2design2/800/600" alt="Refonte site internet Lille"
-                                width="800" height="600" loading="lazy">
+                            <img src="images/marketing_card_2_new.png" alt="Refonte site internet Lille" width="800"
+                                height="600" loading="lazy">
                         </div>
                         <div class="card-content">
                             <div class="card-number">2</div>
@@ -209,6 +209,18 @@
             </div>
         </section>
 
+        <!-- Project Definition CTA -->
+        <section class="section-padding bg-light">
+            <div class="container text-center">
+                <h2>Je ne sais pas quel site choisir</h2>
+                <p class="section-subtitle">Laissez-vous guider ! Répondez à quelques questions pour définir votre
+                    projet et recevoir une recommandation personnalisée.</p>
+                <a href="pages/definir-mon-projet.html" class="btn btn-primary">
+                    Définir mon projet <i class="fas fa-magic ml-2"></i>
+                </a>
+            </div>
+        </section>
+
         <!-- Projets Phares -->
         <section class="section-padding bg-background">
             <div class="container">
@@ -219,58 +231,16 @@
                     </p>
                 </div>
 
-                <div class="projects-grid-home">
-                    <!-- Project 1: Les Jardins de Marie -->
-                    <article class="project-card-home project-nature">
-                        <div class="project-image">
-                            <img src="images/jardins_de_marie.webp"
-                                alt="Site e-commerce Les Jardins de Marie - Hauts-de-France" width="600" height="400"
-                                loading="lazy">
-                        </div>
-                        <div class="project-info">
-                            <span class="project-category">Site Vitrine & E-commerce</span>
-                            <h3 class="project-title project-title-large">Les Jardins de Marie</h3>
-                            <p class="project-desc">Des légumes cultivés avec passion dans les Hauts-de-France.
-                                Découvrez nos produits bio, récoltés à la main.</p>
-                            <a href="https://milann-lede.github.io/les-jardins-de-marie/" class="btn btn-outline">Voir
-                                le projet</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 2 -->
-                    <article class="project-card-home project-tech">
-                        <div class="project-image">
-                            <img src="images/digital_planner.webp" alt="Site e-commerce Digital Planner Lisa"
-                                width="600" height="400" loading="lazy">
-                        </div>
-                        <div class="project-info">
-                            <span class="project-category">E-commerce</span>
-                            <h3 class="project-title project-title-large">Digital Planner Lisa</h3>
-                            <p class="project-desc">Un planificateur numérique esthétique et fonctionnel pour organiser
-                                votre quotidien.</p>
-                            <a href="https://milann-lede.github.io/Digitale-planer-lisa/" class="btn btn-outline">Voir
-                                le projet</a>
-                        </div>
-                    </article>
-
-                    <!-- Project 3 -->
-                    <article class="project-card-home project-gaming">
-                        <div class="project-image">
-                            <img src="images/game.webp" alt="Site vitrine Game Fusione - présentation jeux vidéo"
-                                width="600" height="400" loading="lazy">
-                        </div>
-                        <div class="project-info">
-                            <span class="project-category">site web </span>
-                            <h3 class="project-title project-title-large">Game fusione</h3>
-                            <p class="project-desc">Site de présentation de jeux vidéo fait sur le site.
-                            </p>
-                            <a href="https://game-fusione.netlify.app/" class="btn btn-outline">Voir le projet</a>
-                        </div>
-                    </article>
+                <div class="projects-grid-home" id="featuredProjectsGrid">
+                    <!-- Loader -->
+                    <div class="text-center col-span-full" id="featuredProjectsLoader">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        <p>Chargement des projets...</p>
+                    </div>
                 </div>
 
                 <div class="text-center view-all-projects">
-                    <a href="pages/Nos Réalisations.html" class="btn btn-primary">
+                    <a href="pages/realisations.html" class="btn btn-primary">
                         Voir tous nos projets <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
@@ -372,19 +342,7 @@
                         </div>
                     </article>
 
-                    <!-- Service 7: Conformité RGPD -->
-                    <article class="service-card-3d">
-                        <div class="service-3d-image-container">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="service-content-3d">
-                            <h3>Conformité RGPD</h3>
-                            <div class="service-description-3d">
-                                <p>Nous assurons la sécurité de vos données et la conformité légale de votre site
-                                    (gestion des cookies, politique confidentialité, sécurité).</p>
-                            </div>
-                        </div>
-                    </article>
+                    <!-- Service 7: Conformité RGPD REMOVED -->
                 </div>
             </div>
         </section>
@@ -439,7 +397,8 @@
                     <h4>Liens Rapides</h4>
                     <ul class="footer-links">
                         <li><a href="index.html">Accueil</a></li>
-                        <li><a href="pages/Nos Réalisations.html">Réalisations</a></li>
+                        <li><a href="pages/realisations.html">Réalisations</a></li>
+                        <li><a href="pages/avis.html">Avis</a></li>
                         <li><a href="pages/contact.html">Contact</a></li>
                         <li><a href="pages/mentions-legales.html">Mentions Légales</a></li>
                         <li><a href="pages/confidentialite.html">Confidentialité</a></li>
@@ -450,16 +409,17 @@
                     <h4>Contact</h4>
                     <address>
                         <ul class="footer-links">
-                            <li><i class="fas fa-map-marker-alt"
-                                    style="margin-right: 8px; color: var(--primary);"></i>Lille, Hauts-de-France</li>
                             <li><a href="mailto:contact@modernweb.fr">contact@modernweb.fr</a></li>
                             <li><a href="tel:+330782591597">+33 07 82 59 15 97</a></li>
+                            <li><i class="fas fa-map-marker-alt"
+                                    style="margin-right: 8px; color: var(--primary);"></i>Lille, Hauts-de-France</li>
                         </ul>
                     </address>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 ModernWeb. Tous droits réservés.</p>
+                <a href="admin/login.html" class="btn btn-outline">Accès admin</a>
             </div>
         </div>
     </footer>
@@ -467,9 +427,77 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="js/config.js" defer></script>
     <script src="js/supabase-client.js" defer></script>
+    <script src="js/projects-service.js" defer></script>
     <script src="js/cookie-consent.js" defer></script>
     <script src="js/script.js" defer></script>
+    <script>
+        // Chargement dynamique des projets phares (featured) sur la homepage
+        document.addEventListener('DOMContentLoaded', async function () {
+            const grid = document.getElementById('featuredProjectsGrid');
+            const loader = document.getElementById('featuredProjectsLoader');
 
+            if (!grid) return;
+
+            try {
+                const projects = await ProjectsService.getFeaturedProjects();
+
+                if (loader) loader.remove();
+
+                if (projects.length === 0) {
+                    grid.innerHTML = '<div class="text-center col-span-full"><p>Projets à venir...</p></div>';
+                    return;
+                }
+
+                // Afficher jusqu'à 3 projets phares
+                projects.slice(0, 3).forEach(project => {
+                    grid.innerHTML += renderHomeProjectCard(project);
+                });
+
+            } catch (err) {
+                console.error('Erreur chargement projets:', err);
+                if (loader) loader.innerHTML = '<p>Chargement...</p>';
+            }
+        });
+
+        // Labels pour les types de projets
+        function getProjectTypeLabel(projectType) {
+            const labels = {
+                site_vitrine: 'Site Vitrine',
+                ecommerce: 'E-commerce',
+                portfolio: 'Portfolio',
+                gaming: 'Site Gaming',
+                application: 'Application Web',
+                immobilier: 'Immobilier',
+                autre: 'Projet Web'
+            };
+            return labels[projectType] || 'Projet';
+        }
+
+        // Rendu d'une carte projet pour la homepage
+        function renderHomeProjectCard(project) {
+            const themeClass = project.theme && project.theme !== 'default' ? `project-${project.theme}` : '';
+            const projectTypeLabel = getProjectTypeLabel(project.project_type);
+            return `
+                <article class="project-card-home ${themeClass}">
+                    <div class="project-image">
+                        ${project.cover_image
+                    ? `<img src="${project.cover_image}" alt="${project.title}" width="600" height="400" loading="lazy">`
+                    : '<div class="project-placeholder"><i class="fas fa-image"></i></div>'
+                }
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">${projectTypeLabel}</span>
+                        <h3 class="project-title project-title-large">${project.title}</h3>
+                        <p class="project-desc">${project.short_desc || ''}</p>
+                        ${project.link
+                    ? `<a href="${project.link}" target="_blank" class="btn btn-outline">Voir le projet</a>`
+                    : '<span class="btn btn-outline disabled">Bientôt disponible</span>'
+                }
+                    </div>
+                </article>
+            `;
+        }
+    </script>
 </body>
 
 </html>

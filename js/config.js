@@ -16,5 +16,5 @@ const EMAILJS_CONFIG = {
 // Configuration Supabase
 const SUPABASE_CONFIG = {
     URL: "https://zenclsoqcmmzxhnjusyg.supabase.co",
-    KEY: "sb_publishable_6of-ackLkcaOGs2rxIqcHA_gR9ro9gH"
+    KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplbmNsc29xY21tenhobmp1c3lnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0NjM1MDksImV4cCI6MjA4MTAzOTUwOX0.MXpMwXIEMEVcEqWgvzJcLtVbjhDb9LpsCUc999hUwRI"
 };

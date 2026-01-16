@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO -->
+    <title>Définir mon Projet Web | ModernWeb Lille</title>
+    <meta name="description"
+        content="Définissez votre projet web en quelques clics. Recevez une recommandation personnalisée et une estimation gratuite.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Libraries -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: EMAILJS_CONFIG.CONTACT_PUBLIC_KEY,
+            });
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">
+                Modern<span>Web</span>
+            </a>
+            <a href="../index.html" class="btn btn-outline btn-sm">Retour à l'accueil</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-padding" style="min-height: 100vh; display: flex; align-items: center;">
+            <div class="container" style="max-width: 800px;">
+
+                <div class="text-center mb-5">
+                    <h1>Définissons votre <span class="text-gradient">Projet Idéal</span></h1>
+                    <p class="hero-subtitle">Répondez à ces questions pour créer le cahier des charges de votre futur
+                        site.</p>
+                </div>
+
+                <div class="wizard-card"
+                    style="background: white; padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container" style="margin-bottom: 2rem;">
+                        <div class="progress-bar-bg"
+                            style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div id="progress-bar"
+                                style="width: 0%; height: 100%; background: var(--gradient-primary); transition: width 0.3s ease;">
+                            </div>
+                        </div>
+                        <div class="text-right"
+                            style="margin-top: 0.5rem; color: var(--text-light); font-size: 0.9rem;">
+                            Étape <span id="current-step-display">1</span>/<span id="total-steps-display">5</span>
+                        </div>
+                    </div>
+
+                    <!-- Steps Form -->
+                    <form id="project-wizard-form">
+
+                        <!-- Step 1: Type of Site -->
+                        <div class="wizard-step active" data-step="1">
+                            <h3>Quel est l'objectif principal de votre site ?</h3>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="project_type" value="Site Vitrine" checked>
+                                    <div class="option-content">
+                                        <i class="fas fa-store"></i>
+                                        <span>Présenter mon activité</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="project_type" value="E-commerce">
+                                    <div class="option-content">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>Vendre en ligne</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="project_type" value="Portfolio">
+                                    <div class="option-content">
+                                        <i class="fas fa-camera"></i>
+                                        <span>Montrer mes créations</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="project_type" value="Blog/Média">
+                                    <div class="option-content">
+                                        <i class="fas fa-newspaper"></i>
+                                        <span>Publier du contenu</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Design Preference -->
+                        <div class="wizard-step" data-step="2">
+                            <h3>Quel style visuel recherchez-vous ?</h3>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="design_style" value="Minimaliste & Épuré" checked>
+                                    <div class="option-content">
+                                        <i class="fas fa-leaf"></i>
+                                        <span>Minimaliste & Épuré</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="design_style" value="Moderne & Tech">
+                                    <div class="option-content">
+                                        <i class="fas fa-laptop-code"></i>
+                                        <span>Moderne & Tech</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="design_style" value="Luxe & Élégant">
+                                    <div class="option-content">
+                                        <i class="fas fa-gem"></i>
+                                        <span>Luxe & Élégant</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="design_style" value="Coloré & Dynamique">
+                                    <div class="option-content">
+                                        <i class="fas fa-paint-brush"></i>
+                                        <span>Coloré & Dynamique</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Features -->
+                        <div class="wizard-step" data-step="3">
+                            <h3>Quelles fonctionnalités souhaitez-vous ?</h3>
+                            <div class="options-list">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Formulaire de contact">
+                                    <span>Formulaire de contact avancé</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Prise de rendez-vous">
+                                    <span>Système de prise de rendez-vous</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Blog / Actualités">
+                                    <span>Blog / Actualités</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Newsletter">
+                                    <span>Inscription Newsletter</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Espace Membre">
+                                    <span>Espace Membre / Connexion</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="features" value="Multilingue">
+                                    <span>Site Multilingue</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Budget & Deadline -->
+                        <div class="wizard-step" data-step="4">
+                            <h3>Budget et Délais</h3>
+
+                            <label class="form-label" style="display:block; margin-top:1rem;">Votre budget
+                                estimé</label>
+                            <select name="budget" class="form-input"
+                                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+                                <option value="Moins de 1000€">Moins de 1000€</option>
+                                <option value="1000€ - 2000€" selected>1000€ - 2000€</option>
+                                <option value="2000€ - 5000€">2000€ - 5000€</option>
+                                <option value="Plus de 5000€">Plus de 5000€</option>
+                            </select>
+
+                            <label class="form-label" style="display:block; margin-top:1.5rem;">Délai souhaité</label>
+                            <select name="deadline" class="form-input"
+                                style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+                                <option value="Urgent (< 1 mois)">Urgent (Moins d'un mois)</option>
+                                <option value="1 à 2 mois" selected>1 à 2 mois</option>
+                                <option value="3 mois et plus">3 mois et plus</option>
+                                <option value="Pas de date précise">Pas de date précise</option>
+                            </select>
+                        </div>
+
+                        <!-- Step 5: Contact Info -->
+                        <div class="wizard-step" data-step="5">
+                            <h3>Vos Coordonnées</h3>
+                            <p class="text-sm text-gray-600 mb-4">Pour vous envoyer le récapitulatif PDF et le devis.
+                            </p>
+
+                            <div class="form-group mb-3">
+                                <label>Nom Complet</label>
+                                <input type="text" name="user_name" required
+                                    class="form-input block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+                                    placeholder="Jean Dupont">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label>Email</label>
+                                <input type="email" name="user_email" required
+                                    class="form-input block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+                                    placeholder="jean@exemple.com">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label>Téléphone (Optionnel)</label>
+                                <input type="tel" name="user_phone"
+                                    class="form-input block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+                                    placeholder="06 12 34 56 78">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label>Nom de l'entreprise (Optionnel)</label>
+                                <input type="text" name="user_company"
+                                    class="form-input block w-full mt-1 border-gray-300 rounded-md shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="wizard-nav"
+                            style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                            <button type="button" id="prev-btn" class="btn btn-outline"
+                                style="display: none;">Précédent</button>
+                            <button type="button" id="next-btn" class="btn btn-primary">Suivant</button>
+                            <button type="submit" id="submit-btn" class="btn btn-primary" style="display: none;">
+                                Valider et Recevoir mon PDF <i class="fas fa-file-pdf ml-2"></i>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/project-wizard.js"></script>
+    <style>
+        .wizard-step {
+            display: none;
+        }
+
+        .wizard-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .option-card {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .option-card input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .option-content {
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .option-content i {
+            font-size: 2rem;
+            color: var(--text-light);
+        }
+
+        .option-card:hover .option-content {
+            border-color: var(--primary);
+        }
+
+        .option-card input:checked+.option-content {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .option-card input:checked+.option-content i {
+            color: var(--primary);
+        }
+
+        .options-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-option:hover {
+            background: #f8fafc;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+
+</html>

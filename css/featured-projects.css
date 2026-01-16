@@ -1,81 +1,20 @@
-/* Homepage Projects Grid */
-.projects-grid-home {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-}
-
-@media (max-width: 768px) {
-    .projects-grid-home {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-}
-
-.project-card-home {
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.project-card-home:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-xl);
-}
-
-.project-card-home .project-image {
-    height: 300px;
-    width: 100%;
-}
-
-.project-card-home .project-info {
-    padding: 2rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.project-card-home .project-desc {
-    margin-bottom: 1.5rem;
-    flex: 1; /* Pushes button to bottom */
-}
-
-.project-title-large {
-    font-size: 1.5rem !important;
-}
-
-/* Featured Projects Custom Styles */
-
-/* Common Container Styles for the 3D-ish look */
-.project-card-home {
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    background: var(--surface);
-    border: none;
-}
-
-.project-card-home:hover {
-    transform: translateY(-10px) scale(1.02);
-    z-index: 10;
-}
+/**
+ * ModernWeb - Featured Projects Cards
+ * Styles spécifiques pour les variantes de cartes projet sur la page d'accueil
+ * 
+ * Dépend de : style.css (styles de base .project-card-home)
+ */
 
 /* =========================================
-Card 1: Nature / Geometric (Jardins de Marie)
-========================================= */
+   Card 1: Nature / Geometric (Jardins de Marie)
+   ========================================= */
 .project-nature {
     background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
     border: 1px solid #bbf7d0;
     box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.2);
     border-radius: 20px;
+    position: relative;
+    isolation: isolate;
 }
 
 .project-nature::before {
@@ -106,7 +45,7 @@ Card 1: Nature / Geometric (Jardins de Marie)
 
 .project-nature .project-image {
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transform: scale(0.95);
     transition: transform 0.4s ease;
 }
@@ -126,13 +65,10 @@ Card 1: Nature / Geometric (Jardins de Marie)
 }
 
 /* =========================================
-Card 2: Tech / Diamond (Portfolio)
-========================================= */
-/* =========================================
-Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
-========================================= */
+   Card 2: Tech / Digital Planner Style
+   ========================================= */
 .project-tech {
-    background: #FDFBF7; /* Cream/Beige background matches bottom half */
+    background: #FDFBF7;
     color: #4A3B32;
     border: none;
     overflow: hidden;
@@ -147,25 +83,15 @@ Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
     display: none;
 }
 
-/* 1. Top Section: Image Area */
 .project-tech .project-image {
-    background: transparent !important; /* Ensure no underlying blue/slate color shows */
-    background-image: none !important;
+    background: transparent !important;
     border: none !important;
-    outline: none !important;
     box-shadow: none !important;
-    
     height: 350px;
     width: 100%;
     position: relative;
     z-index: 1;
-    
-    /* Slanted Cut Effect */
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-    
-    display: block; 
-    padding: 0;
-    margin: 0;
     overflow: hidden;
 }
 
@@ -175,20 +101,13 @@ Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
     object-fit: cover;
     object-position: center;
     transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Ensure no borders on the image itself */
     border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    filter: none !important;
-    background: transparent !important;
 }
 
 .project-tech:hover .project-image img {
     transform: scale(1.1);
 }
 
-/* 2. Bottom Section: Info Body */
 .project-tech .project-info {
     background: #FDFBF7;
     padding: 1.5rem 2.5rem 2.5rem 2.5rem;
@@ -200,9 +119,8 @@ Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
     align-items: flex-start;
 }
 
-/* Badge: E-COMMERCE */
 .project-tech .project-category {
-    background: #881F41; /* Maroon */
+    background: #881F41;
     color: white;
     padding: 8px 18px;
     border-radius: 8px;
@@ -210,37 +128,31 @@ Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
     font-size: 0.8rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    border: none;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 10px rgba(136, 31, 65, 0.2);
 }
 
-/* Title: Digital Planner Lisa */
 .project-tech h3 {
-    color: #3E2F28; /* Dark brown */
+    color: #3E2F28;
     font-size: 2rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    font-family: var(--font-main);
     line-height: 1.1;
 }
 
-/* Description */
 .project-tech p,
 .project-tech .project-desc {
-    color: #6D5A50; /* Softer brown */
+    color: #6D5A50;
     font-size: 1.1rem;
     line-height: 1.6;
     font-weight: 500;
     margin-bottom: 2rem;
 }
 
-/* Button: Voir le projet */
 .project-tech .btn-outline {
-    background: #881F41; /* Maroon */
+    background: #881F41;
     color: white;
-    border: none !important; /* Force remove any border */
-    outline: none !important; /* Force remove focus ring */
+    border: none !important;
     border-radius: 50px;
     padding: 16px 0;
     width: 100%;
@@ -255,25 +167,22 @@ Card 2: Tech / Diamond (Portfolio) -> Digital Planner Redesign (Exact Replica)
     margin-top: auto;
 }
 
-.project-tech .btn-outline:hover,
-.project-tech .btn-outline:focus,
-.project-tech .btn-outline:active {
+.project-tech .btn-outline:hover {
     background: #681530;
     transform: translateY(-3px);
     box-shadow: 0 15px 30px -5px rgba(136, 31, 65, 0.5);
     color: white;
-    border: none !important;
-    outline: none !important;
 }
 
 /* =========================================
-Card 3: Gaming / Neon (Game Fusion)
-========================================= */
+   Card 3: Gaming / Neon Style
+   ========================================= */
 .project-gaming {
     background: #000000;
     border: 2px solid #d946ef;
     box-shadow: 0 0 15px rgba(217, 70, 239, 0.3), inset 0 0 20px rgba(217, 70, 239, 0.1);
     color: white;
+    position: relative;
 }
 
 .project-gaming::before {
@@ -325,4 +234,124 @@ Card 3: Gaming / Neon (Game Fusion)
     background: #d946ef;
     color: white;
     box-shadow: 0 0 20px #d946ef;
+}
+
+/* =========================================
+   Card: En construction
+   ========================================= */
+.project-construction {
+    opacity: 0.85;
+    filter: grayscale(20%);
+}
+
+.project-construction .btn.disabled {
+    background: #94a3b8;
+    color: white;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =========================================
+   Premium Project Card Themes (pour page Réalisations)
+   ========================================= */
+
+/* Theme Nature (vert) */
+.premium-project-card.project-nature {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 2px solid #bbf7d0;
+    box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.2);
+}
+
+.premium-project-card.project-nature .premium-project-category {
+    color: #15803d;
+    background: #dcfce7;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.premium-project-card.project-nature .premium-project-image {
+    border: 3px solid rgba(74, 222, 128, 0.3);
+    border-radius: 16px;
+}
+
+/* Theme Tech (bordeaux) */
+.premium-project-card.project-tech {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4rem;
+    align-items: center;
+    background: #FDFBF7;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+}
+
+.premium-project-card.project-tech .premium-project-image {
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.premium-project-card.project-tech .premium-project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.premium-project-card.project-tech .premium-project-category {
+    background: #881F41;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.premium-project-card.project-tech .premium-project-title {
+    color: #3E2F28;
+}
+
+.premium-project-card.project-tech .premium-project-desc {
+    color: #6D5A50;
+}
+
+/* Theme Gaming (néon violet) */
+.premium-project-card.project-gaming {
+    background: #0a0a0a;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 2px solid #d946ef;
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+}
+
+.premium-project-card.project-gaming .premium-project-category {
+    color: #22d3ee;
+    text-shadow: 0 0 5px #22d3ee;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.premium-project-card.project-gaming .premium-project-title {
+    color: #e879f9;
+    text-shadow: 0 0 5px rgba(232, 121, 249, 0.5);
+}
+
+.premium-project-card.project-gaming .premium-project-desc {
+    color: #e2e8f0;
+}
+
+.premium-project-card.project-gaming .premium-project-image {
+    border: 2px solid #22d3ee;
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
+
+.premium-project-card.project-gaming .btn {
+    border-color: #d946ef;
+    color: #d946ef;
+}
+
+.premium-project-card.project-gaming .btn:hover {
+    background: #d946ef;
+    color: white;
 }

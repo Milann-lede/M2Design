@@ -102,9 +102,10 @@
 /* 2. Adjust Title */
 .service-card-3d:hover .service-content-3d h3 {
     text-align: left;
-    transform: translateX(40px) translateY(-55px); /* Move right and up to align with icon */
+    transform: translateX(30px) translateY(-35px); /* Adjusted to prevent overlap */
     justify-content: flex-start;
     font-size: 1.3rem;
+    padding-left: 10px; /* Added spacing */
 }
 
 /* 3. Reveal Text */
