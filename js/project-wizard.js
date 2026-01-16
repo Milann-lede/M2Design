@@ -486,15 +486,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         y += 26;
 
-        // === 3b. DÉTAIL DU BREAKDOWN ===
-        if (data.breakdown && data.breakdown.length > 0) {
+        // === 3b. DÉTAIL DU BREAKDOWN (uniquement les éléments avec prix) ===
+        // Filtrer pour ne garder que les éléments avec des prix (pas les "Inclus")
+        const pricedItems = (data.breakdown || []).filter(item =>
+            item.value.toLowerCase() !== 'inclus'
+        );
+
+        if (pricedItems.length > 0) {
             doc.setFillColor(...colors.background);
-            doc.roundedRect(15, y, 180, 6 + data.breakdown.length * 6, 3, 3, 'F');
+            doc.roundedRect(15, y, 180, 6 + pricedItems.length * 6, 3, 3, 'F');
 
             let bY = y + 5;
             doc.setFontSize(7);
 
-            data.breakdown.forEach((item, index) => {
+            pricedItems.forEach((item, index) => {
                 // Ligne alternée pour lisibilité
                 if (index % 2 === 0) {
                     doc.setFillColor(248, 250, 252);
@@ -506,19 +511,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 doc.setTextColor(...colors.textMain);
                 doc.text(item.label.substring(0, 40), 20, bY);
 
-                // Valeur à droite (couleur selon si c'est "Inclus" ou un prix)
-                if (item.value.toLowerCase() === 'inclus') {
-                    doc.setTextColor(...colors.success);
-                } else {
-                    doc.setTextColor(...colors.primary);
-                }
+                // Prix à droite en bleu
+                doc.setTextColor(...colors.primary);
                 doc.setFont('helvetica', 'bold');
                 doc.text(item.value, 190, bY, { align: 'right' });
 
                 bY += 6;
             });
 
-            y += 8 + data.breakdown.length * 6;
+            y += 8 + pricedItems.length * 6;
         }
 
         // === 4. FONCTIONNALITÉS - LISTE HORIZONTALE ===
