@@ -275,11 +275,14 @@
                     </p>
                 </div>
 
-                <div class="projects-grid-home" id="featuredProjectsGrid">
-                    <!-- Loader -->
-                    <div class="text-center col-span-full" id="featuredProjectsLoader">
-                        <i class="fas fa-spinner fa-spin fa-2x"></i>
-                        <p>Chargement des projets...</p>
+                <!-- Carousel Container -->
+                <div class="projects-carousel-wrapper">
+                    <div class="projects-carousel" id="featuredProjectsGrid">
+                        <!-- Loader -->
+                        <div class="text-center col-span-full" id="featuredProjectsLoader">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                            <p>Chargement des projets...</p>
+                        </div>
                     </div>
                 </div>
 
@@ -492,9 +495,33 @@
                     return;
                 }
 
-                // Afficher jusqu'à 3 projets phares
-                projects.slice(0, 3).forEach(project => {
+                // Afficher tous les projets phares (jusqu'à 10)
+                projects.slice(0, 10).forEach(project => {
                     grid.innerHTML += renderHomeProjectCard(project);
+                });
+
+                // Auto-scroll toutes les 4 secondes
+                const scrollAmount = grid.querySelector('article')?.offsetWidth + 32 || 360;
+
+                let autoScroll = setInterval(() => {
+                    // Si on est à la fin, revenir au début
+                    if (grid.scrollLeft + grid.offsetWidth >= grid.scrollWidth - 10) {
+                        grid.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                    }
+                }, 2000);
+
+                // Pause au survol
+                grid.addEventListener('mouseenter', () => clearInterval(autoScroll));
+                grid.addEventListener('mouseleave', () => {
+                    autoScroll = setInterval(() => {
+                        if (grid.scrollLeft + grid.offsetWidth >= grid.scrollWidth - 10) {
+                            grid.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                        }
+                    }, 2000);
                 });
 
             } catch (err) {

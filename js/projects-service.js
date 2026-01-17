@@ -22,7 +22,7 @@ const ProjectsService = (function () {
     }
 
     /**
-     * Récupère tous les projets publiés
+     * Récupère tous les projets publiés OU mis en avant
      * @returns {Promise<Array>}
      */
     async function getPublishedProjects() {
@@ -35,11 +35,13 @@ const ProjectsService = (function () {
         }
 
         try {
+            // Récupère les projets publiés OU mis en avant (featured)
             const { data, error } = await supabaseClient
                 .from('projects')
                 .select('*')
-                .eq('status', 'publie')
-                .order('project_date', { ascending: true });
+                .or('status.eq.publie,featured.eq.true')
+                .order('featured', { ascending: false }) // Featured en premier
+                .order('project_date', { ascending: false });
 
             if (error) throw error;
 
